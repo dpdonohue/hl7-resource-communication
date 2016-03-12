@@ -1,4 +1,4 @@
-##clinical:hl-7-resource-patient
+##clinical:hl7-resource-patient
 
 HL7 FHIR Patient Resource
 
