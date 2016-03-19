@@ -9,16 +9,13 @@ Session.setDefault( 'skipCount', 0 );
 //------------------------------------------------------------------------------
 // ROUTING
 
-Router.map( function () {
-  this.route( 'patientsListPage', {
-    path: '/list/patients/',
-    template: 'patientsListPage',
-    data: function () {
-      return Patients.find();
-    }
-  } );
-} );
-
+Router.route( '/list/patients/', {
+  name: 'patientsListPage',
+  template: 'patientsListPage',
+  data: function () {
+    return Patients.find();
+  }
+});
 
 //------------------------------------------------------------------------------
 // TEMPLATE INPUTS
@@ -45,17 +42,19 @@ Template.patientsListPage.events( {
 var OFFSCREEN_CLASS = 'off-screen';
 var EVENTS = 'webkitTransitionEnd oTransitionEnd transitionEnd msTransitionEnd transitionend';
 
-Template.patientsListPage.rendered = function () {
-  console.log( 'trying to update layout...' );
-
-  Template.appLayout.delayedLayout( 20 );
-};
+// Template.patientsListPage.rendered = function () {
+//   console.log( 'trying to update layout...' );
+//
+//   Template.appLayout.delayedLayout( 20 );
+// };
 
 
 Template.patientsListPage.helpers( {
+  getName: function(){
+    return this.name[0].text;
+  },
   hasNoContent: function () {
-    if ( Patients.find()
-      .count() === 0 ) {
+    if ( Patients.find().count() === 0 ) {
       return true;
     } else {
       return false;
@@ -66,11 +65,12 @@ Template.patientsListPage.helpers( {
 
     Template.appLayout.delayedLayout( 20 );
 
-    return Patients.find( {
-      'profile.fullName': {
-        $regex: Session.get( 'patientSearchFilter' ),
-        $options: 'i'
-      }
-    } );
+    return Patients.find();
+    // return Patients.find( {
+    //   'name.$.text': {
+    //     $regex: Session.get( 'patientSearchFilter' ),
+    //     $options: 'i'
+    //   }
+    // } );
   }
 } );
