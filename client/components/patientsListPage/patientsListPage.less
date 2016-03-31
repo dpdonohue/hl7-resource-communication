@@ -23,11 +23,26 @@
     .noResultsMessage{
       text-align: center;
     }
+
+    .avatar{
+      height: 80px;
+      width: 80px;
+      float: left;
+    }
+    .patientMetadata{
+      position: relative;
+      margin-left: 80px;
+      padding-left: 20px;
+    }
+
   }
   li:hover{
-    color: maroon;
-    border-top: 1px solid maroon !important;
+    color: teal;
+    border-top: 1px solid teal !important;
     cursor: pointer;
+    h2, h6, .barcode{
+      color: teal;      
+    }
   }
 
   li.usersUnorderedList.notificationHidden {
@@ -41,8 +56,9 @@
     right: 0px;
   }
   .descriptionText{
-    position: absolute;
-    top: 25px;
+    position: static;
+    top: 0px;
+    color: 'gray';
   }
   .fadeAway{
     height: 10px;

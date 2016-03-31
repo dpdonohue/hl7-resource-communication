@@ -36,11 +36,6 @@ Router.route('/view/patient/:id', {
 //-------------------------------------------------------------
 
 
-Template.patientUpsertPage.rendered = function () {
-  Template.appLayout.layout();
-};
-
-
 Template.patientUpsertPage.helpers({
   getName: function(){
     return this.name[0].text;

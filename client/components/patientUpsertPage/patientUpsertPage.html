@@ -10,7 +10,7 @@
           <input id="patientEmailInput"  class="glass form-control" type="text" placeholder="patientname@somewhere.com" value="{{getEmailAddress}}" {{isReadOnly}}>
           <!-- <input id="patientAvatarInput"  class="glass form-control" type="text" placeholder="http://www.widget.com/cog.jpg" value="{{profile.avatar}}" {{isReadOnly}}> -->
         </div>
-        <img id="patientImage" src="{{profile.avatar}}" />
+        <img id="patientImage" src="{{ getAvatar }}" />
       </div>
       <textarea id="patientDescriptionInput"  class="glass form-control" rows="10" placeholder="Lorem ipsum dolar set et..." {{isReadOnly}}>{{profile.description}}</textarea><br>
     </div>

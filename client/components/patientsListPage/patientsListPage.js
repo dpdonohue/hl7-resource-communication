@@ -50,6 +50,9 @@ var EVENTS = 'webkitTransitionEnd oTransitionEnd transitionEnd msTransitionEnd t
 
 
 Template.patientsListPage.helpers( {
+  dateOfBirth: function(){
+    return moment(this.birthDate).format("MMM DD, YYYY");
+  },
   getName: function(){
     return this.name[0].text;
   },

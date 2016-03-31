@@ -105,7 +105,6 @@ Template.patientsTablePage.helpers({
 
 
 Template.patientsTablePage.rendered = function(){
-  Template.appLayout.layout();
 
   // step A:  initialize the table sorting functionality
   $(this.find('#patientsTable')).tablesorter();

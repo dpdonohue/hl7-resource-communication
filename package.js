@@ -1,12 +1,12 @@
 Package.describe({
   name: 'clinical:hl7-resource-patient',
-  version: '0.1.3',
+  version: '0.1.5',
   summary: 'HL7 FHIR Patient Resource',
   git: 'https://github.com/clinical-meteor/hl7-resource-patient',
   documentation: 'README.md'
 });
 
-Package.onUse(function(api) {
+Package.onUse(function (api) {
   api.versionsFrom('1.1.0.3');
 
   api.use('meteor-platform');
@@ -44,6 +44,8 @@ Package.onUse(function(api) {
   //api.addFiles('server/methods.js', 'server');
 
   api.addFiles('lib/Patients.js');
+
+  api.addFiles('server/rest.js', 'server');
 
   api.export('Patients');
 

@@ -5,18 +5,9 @@ Router.map(function(){
     template: 'patientPreviewPage',
     data: function () {
       return Patients.findOne({_id: this.params.id});
-    },
-    onAfterAction: function(){
-      Template.appLayout.layout();
     }
   });
 });
-
-
-Template.patientPreviewPage.rendered = function(){
-  Template.appLayout.layout();
-};
-
 
 
 Template.patientPreviewPage.events({
