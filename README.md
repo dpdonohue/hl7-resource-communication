@@ -1,6 +1,6 @@
 ##clinical:hl7-resource-patient
 
-HL7 FHIR Patient Resource
+HL7 FHIR Resource - Patient
 
 ===============================
 #### Installation  
