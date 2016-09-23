@@ -1,6 +1,6 @@
 Package.describe({
   name: 'clinical:hl7-resource-patient',
-  version: '1.3.2',
+  version: '1.3.4',
   summary: 'HL7 FHIR Resource - Patient',
   git: 'https://github.com/clinical-meteor/hl7-resource-patient',
   documentation: 'README.md'
@@ -23,7 +23,7 @@ Package.onUse(function (api) {
   api.use('clinical:extended-api@2.2.2');
   // api.use('clinical:router@2.0.17');
   api.use('clinical:base-model@1.3.5');
-  api.use('clinical:hl7-resource-datatypes@0.4.2');
+  api.use('clinical:hl7-resource-datatypes@0.4.6');
 
   // api.addFiles('client/components/patientUpsertPage/patientUpsertPage.html', ['client']);
   // api.addFiles('client/components/patientUpsertPage/patientUpsertPage.js', ['client']);
