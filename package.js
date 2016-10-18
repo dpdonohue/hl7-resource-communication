@@ -28,25 +28,6 @@ Package.onUse(function (api) {
 
   api.imply('clinical:user-model');
 
-  // api.addFiles('client/components/patientUpsertPage/patientUpsertPage.html', ['client']);
-  // api.addFiles('client/components/patientUpsertPage/patientUpsertPage.js', ['client']);
-  // api.addFiles('client/components/patientUpsertPage/patientUpsertPage.less', ['client']);
-  //
-  // api.addFiles('client/components/patientsTablePage/patientsTablePage.html', ['client']);
-  // api.addFiles('client/components/patientsTablePage/patientsTablePage.js', ['client']);
-  // api.addFiles('client/components/patientsTablePage/patientsTablePage.less', ['client']);
-  // api.addFiles('client/components/patientsTablePage/jquery.tablesorter.js', ['client']);
-  //
-  // api.addFiles('client/components/patientPreviewPage/patientPreviewPage.html', ['client']);
-  // api.addFiles('client/components/patientPreviewPage/patientPreviewPage.js', ['client']);
-  // api.addFiles('client/components/patientPreviewPage/patientPreviewPage.less', ['client']);
-  //
-  // api.addFiles('client/components/patientsListPage/patientsListPage.html', ['client']);
-  // api.addFiles('client/components/patientsListPage/patientsListPage.js', ['client']);
-  // api.addFiles('client/components/patientsListPage/patientsListPage.less', ['client']);
-
-  //api.addFiles('server/methods.js', 'server');
-
   api.addFiles('lib/Patients.js');
   api.addFiles('server/rest.js', 'server');
 
