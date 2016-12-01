@@ -1,6 +1,6 @@
 Package.describe({
   name: 'clinical:hl7-resource-patient',
-  version: '1.5.8',
+  version: '1.5.9',
   summary: 'HL7 FHIR Resource - Patient',
   git: 'https://github.com/clinical-meteor/hl7-resource-patient',
   documentation: 'README.md'
@@ -11,13 +11,11 @@ Package.onUse(function (api) {
   api.versionsFrom('1.1.0.3');
 
   api.use('meteor-platform');
-  api.use('grove:less@0.1.1');
-
 
   api.use('meteor-platform');
   api.use('mongo');
   api.use('aldeed:simple-schema@1.3.3');
-  api.use('aldeed:collection2@2.3.3');
+  api.use('aldeed:collection2@2.5.0');
   api.use('simple:json-routes@2.1.0');
   api.use('prime8consulting:meteor-oauth2-server@0.0.2');
 
@@ -34,5 +32,4 @@ Package.onUse(function (api) {
   api.export("Patient");
   api.export('Patients');
   api.export('PatientSchema');
-
 });
