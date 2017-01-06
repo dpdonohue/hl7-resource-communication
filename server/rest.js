@@ -151,12 +151,13 @@ JsonRoutes.add("post", "/fhir/Patient/:id", function (req, res, next) {
       if (req && req.query && req.query._count) {
         searchLimit = parseInt(req.query._count);
       }
-      patientData = Patients.find({}, {limit: searchLimit}).map(function(patient){
-        patient.id = patient._id;
-        delete patient._document;
-        delete patient._id;
-        return patient;
-      });
+      // patientData = Patients.find({}, {limit: searchLimit}).map(function(patient){
+      //   patient.id = patient._id;
+      //   delete patient._document;
+      //   delete patient._id;
+      //   return patient;
+      // });
+      patientData = Patients.fetchBundle({}, {limit: searchLimit});
     }
 
     process.env.TRACE && console.log('patientData', patientData);
