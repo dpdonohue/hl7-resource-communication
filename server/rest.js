@@ -7,6 +7,7 @@ JsonRoutes.Middleware.use(
 
 JsonRoutes.add("get", "/fhir/Patient/:id", function (req, res, next) {
   process.env.DEBUG && console.log('GET /fhir/Patient/' + req.params.id);
+  process.env.DEBUG && console.log('GET /fhir/Patient/' + req.query._count);
 
   res.setHeader("Access-Control-Allow-Origin", "*");
 
@@ -26,9 +27,25 @@ JsonRoutes.add("get", "/fhir/Patient/:id", function (req, res, next) {
       }});
     }
 
+    var patientData;
     var id = req.params.id;
-    var patientData = Patients.findOne({_id: id});
-    delete patientData._document;
+
+    if (id === '_search') {
+      var searchLimit = 1;
+      if (req && req.query && req.query._count) {
+        searchLimit = parseInt(req.query._count);
+      }
+      patientData = Patients.find({}, {limit: searchLimit}).map(function(patient){
+        patient.id = patient._id;
+        delete patient._document;
+        delete patient._id;
+        return patient;
+      });
+    } else {
+      patientData = Patients.findOne({_id: id});
+      delete patientData._document;
+    }
+
     process.env.TRACE && console.log('patientData', patientData);
 
     JsonRoutes.sendResult(res, {
