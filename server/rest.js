@@ -108,14 +108,21 @@ JsonRoutes.add("get", "/fhir/Patient", function (req, res, next) {
     process.env.DEBUG && console.log('databaseQuery', databaseQuery);
     process.env.DEBUG && console.log('Patients.find(id)', Patients.find(databaseQuery).fetch());
 
-    // because we're using BaseModel and a _transform() function
-    // Patients returns an object instead of a pure JSON document
-    // it stores a shadow reference of the original doc, which we're removing here
-    var patientData = Patients.find(databaseQuery).fetch();
+    // // because we're using BaseModel and a _transform() function
+    // // Patients returns an object instead of a pure JSON document
+    // // it stores a shadow reference of the original doc, which we're removing here
+    // var patientData = Patients.find(databaseQuery).fetch();
 
-    patientData.forEach(function(patient){
-      delete patient._document;
-    });
+    var searchLimit = 1;
+    var patientData = Patients.fetchBundle(databaseQuery);
+
+    // var patientData;
+    // if (Patients.find(databaseQuery).count() > 1) {
+    //   patientData = Patients.fetchBundle(databaseQuery);
+    // } else {
+    //   patientData = Patients.findOne(databaseQuery);
+    //   delete patientData._document;
+    // }
 
     JsonRoutes.sendResult(res, {
       code: 200,
@@ -129,7 +136,7 @@ JsonRoutes.add("get", "/fhir/Patient", function (req, res, next) {
 });
 
 
-JsonRoutes.add("post", "/fhir/Patient/:id", function (req, res, next) {
+JsonRoutes.add("post", "/fhir/Patient/:param", function (req, res, next) {
   process.env.DEBUG && console.log('GET /fhir/Patient/' + JSON.stringify(req.query));
 
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -146,17 +153,11 @@ JsonRoutes.add("post", "/fhir/Patient/:id", function (req, res, next) {
 
     var patientData;
 
-    if (req.params.id === '_search') {
+    if (req.params.param === '_search') {
       var searchLimit = 1;
       if (req && req.query && req.query._count) {
         searchLimit = parseInt(req.query._count);
       }
-      // patientData = Patients.find({}, {limit: searchLimit}).map(function(patient){
-      //   patient.id = patient._id;
-      //   delete patient._document;
-      //   delete patient._id;
-      //   return patient;
-      // });
       patientData = Patients.fetchBundle({}, {limit: searchLimit});
     }
 
