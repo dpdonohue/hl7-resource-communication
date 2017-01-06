@@ -196,6 +196,14 @@ JsonRoutes.add("post", "/fhir/Patient", function (req, res, next) {
     if (req.body) {
       newPatient = req.body;
       PatientSchema.clean(newPatient);
+
+      newPatient.name.forEach(function(name){
+        HumanName.clean(name);
+      });
+      newPatient.contact.forEach(function(contact){
+        HumanName.clean(contact.name);        
+      });
+
       patientData = Patients.insert(newPatient);
 
       process.env.TRACE && console.log('patientData', patientData);
