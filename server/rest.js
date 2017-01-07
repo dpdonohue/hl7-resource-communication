@@ -247,7 +247,7 @@ JsonRoutes.add("post", "/fhir/Patient", function (req, res, next) {
       delete req.body.meta;
 
 
-      Patients.insert(newPatient, function(error, result){
+      var patientId = Patients.insert(newPatient, function(error, result){
         if (error) {
           JsonRoutes.sendResult(res, {
             code: 400
@@ -260,7 +260,7 @@ JsonRoutes.add("post", "/fhir/Patient", function (req, res, next) {
           res.setHeader("ETag", "1.6.0");
           JsonRoutes.sendResult(res, {
             code: 201,
-            data: Bundle.generate()
+            data: Bundle.generate(Patients.find({_id: result}))
           });
         }
       });
