@@ -194,13 +194,14 @@ JsonRoutes.add("post", "/fhir/Patient", function (req, res, next) {
       process.env.TRACE && console.log('accessToken.userId', accessToken.userId);
     }
 
-    var patientData;
+    var patientId;
     var newPatient;
 
     if (req.body) {
       newPatient = req.body;
       PatientSchema.clean(newPatient);
 
+      // make sure names are properly formatted
       newPatient.name.forEach(function(name){
         HumanName.clean(name);
       });
@@ -208,16 +209,28 @@ JsonRoutes.add("post", "/fhir/Patient", function (req, res, next) {
         HumanName.clean(contact.name);
       });
 
-      patientData = Patients.insert(newPatient);
+      // remove id and meta, if we're recycling a resource
+      delete req.body.id;
+      delete req.body.meta;
 
-      process.env.TRACE && console.log('patientData', patientData);
-      JsonRoutes.sendResult(res, {
-        code: 201,
-        data: patientData
+
+      Patients.insert(newPatient, function(error, result){
+        if (error) {
+          JsonRoutes.sendResult(res, {
+            code: 400
+          });
+        }
+        if (result) {
+          process.env.TRACE && console.log('result', result);
+          res.setHeader("Location", "fhir/Patient/" + result);
+          JsonRoutes.sendResult(res, {
+            code: 201
+          });
+        }
       });
     } else {
       JsonRoutes.sendResult(res, {
-        code: 200
+        code: 422
       });
 
     }
