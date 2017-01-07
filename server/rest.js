@@ -259,7 +259,8 @@ JsonRoutes.add("post", "/fhir/Patient", function (req, res, next) {
           res.setHeader("Last-Modified", new Date());
           res.setHeader("ETag", "1.6.0");
           JsonRoutes.sendResult(res, {
-            code: 201
+            code: 201,
+            data: Bundle.generate()
           });
         }
       });
