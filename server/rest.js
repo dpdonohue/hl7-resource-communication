@@ -137,7 +137,7 @@ JsonRoutes.add("get", "/fhir/Patient", function (req, res, next) {
 
 
 JsonRoutes.add("post", "/fhir/Patient/:param", function (req, res, next) {
-  process.env.DEBUG && console.log('GET /fhir/Patient/' + JSON.stringify(req.query));
+  process.env.DEBUG && console.log('POST /fhir/Patient/' + JSON.stringify(req.query));
 
   res.setHeader("Access-Control-Allow-Origin", "*");
 
@@ -179,7 +179,7 @@ JsonRoutes.setResponseHeaders({
 });
 
 JsonRoutes.add("post", "/fhir/Patient", function (req, res, next) {
-  process.env.DEBUG && console.log('GET /fhir/Patient/', req.body);
+  process.env.DEBUG && console.log('POST /fhir/Patient/', req.body);
 
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("content-type", "application/fhir+json");
@@ -229,6 +229,42 @@ JsonRoutes.add("post", "/fhir/Patient", function (req, res, next) {
   }
 });
 
+
+
+JsonRoutes.add("delete", "/fhir/Patient/:id", function (req, res, next) {
+  process.env.DEBUG && console.log('DELETE /fhir/Patient/' + req.params.id);
+
+  res.setHeader("Access-Control-Allow-Origin", "*");
+
+  var accessTokenStr = (req.params && req.params.access_token) || (req.query && req.query.access_token);
+  var accessToken = oAuth2Server.collections.accessToken.findOne({accessToken: accessTokenStr});
+
+  if (accessToken || process.env.NOAUTH || Meteor.settings.private.disableOauth) {
+
+    if (accessToken) {
+      process.env.TRACE && console.log('accessToken', accessToken);
+      process.env.TRACE && console.log('accessToken.userId', accessToken.userId);
+    }
+
+    Patients.remove({_id: req.params.id}, function(error, result){
+      if (result) {
+        JsonRoutes.sendResult(res, {
+          code: 204
+        });
+      }
+      if (error) {
+        JsonRoutes.sendResult(res, {
+          code: 409
+        });
+      }
+    });
+
+  } else {
+    JsonRoutes.sendResult(res, {
+      code: 401
+    });
+  }
+});
 
 
 // WebApp.connectHandlers.use("/fhir/Patient", function(req, res, next) {
