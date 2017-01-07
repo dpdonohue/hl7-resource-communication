@@ -174,11 +174,15 @@ JsonRoutes.add("post", "/fhir/Patient/:param", function (req, res, next) {
   }
 });
 
+JsonRoutes.setResponseHeaders({
+  "content-type": "application/fhir+json"
+});
 
 JsonRoutes.add("post", "/fhir/Patient", function (req, res, next) {
   process.env.DEBUG && console.log('GET /fhir/Patient/', req.body);
 
   res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("content-type", "application/fhir+json");
 
   var accessTokenStr = (req.params && req.params.access_token) || (req.query && req.query.access_token);
   var accessToken = oAuth2Server.collections.accessToken.findOne({accessToken: accessTokenStr});
@@ -201,7 +205,7 @@ JsonRoutes.add("post", "/fhir/Patient", function (req, res, next) {
         HumanName.clean(name);
       });
       newPatient.contact.forEach(function(contact){
-        HumanName.clean(contact.name);        
+        HumanName.clean(contact.name);
       });
 
       patientData = Patients.insert(newPatient);
