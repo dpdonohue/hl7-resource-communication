@@ -97,11 +97,11 @@ JsonRoutes.add("get", "/fhir/Patient", function (req, res, next) {
       process.env.TRACE && console.log('accessToken.userId', accessToken.userId);
     }
 
-    if (typeof SiteStatistics === "object") {
-      SiteStatistics.update({_id: "configuration"}, {$inc:{
-        "Patients.count.search-type": 1
-      }});
-    }
+    // if (typeof SiteStatistics === "object") {
+    //   SiteStatistics.update({_id: "configuration"}, {$inc:{
+    //     "Patients.count.search-type": 1
+    //   }});
+    // }
 
     var databaseQuery = {};
 
@@ -143,21 +143,8 @@ JsonRoutes.add("get", "/fhir/Patient", function (req, res, next) {
     process.env.DEBUG && console.log('databaseQuery', databaseQuery);
     process.env.DEBUG && console.log('Patients.find(id)', Patients.find(databaseQuery).fetch());
 
-    // // because we're using BaseModel and a _transform() function
-    // // Patients returns an object instead of a pure JSON document
-    // // it stores a shadow reference of the original doc, which we're removing here
-    // var patientData = Patients.find(databaseQuery).fetch();
-
     var searchLimit = 1;
     var patientData = Patients.fetchBundle(databaseQuery);
-
-    // var patientData;
-    // if (Patients.find(databaseQuery).count() > 1) {
-    //   patientData = Patients.fetchBundle(databaseQuery);
-    // } else {
-    //   patientData = Patients.findOne(databaseQuery);
-    //   delete patientData._document;
-    // }
 
     JsonRoutes.sendResult(res, {
       code: 200,
