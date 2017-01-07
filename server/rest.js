@@ -18,7 +18,7 @@ JsonRoutes.sendResult = function (res, options) {
   if (options.data !== undefined) {
     var shouldPrettyPrint = (process.env.NODE_ENV === 'development');
     var spacer = shouldPrettyPrint ? 2 : null;
-    res.setHeader('Content-type', 'application/json');
+    res.setHeader('Content-type', 'application/fhir+json');
     res.write(JSON.stringify(options.data, null, spacer));
   }
 
@@ -35,7 +35,9 @@ JsonRoutes.sendResult = function (res, options) {
   res.end();
 };
 
-
+JsonRoutes.setResponseHeaders({
+  "content-type": "application/fhir+json"
+});
 
 
 JsonRoutes.add("get", "/fhir/Patient/:id", function (req, res, next) {
@@ -207,9 +209,7 @@ JsonRoutes.add("post", "/fhir/Patient/:param", function (req, res, next) {
   }
 });
 
-JsonRoutes.setResponseHeaders({
-  "content-type": "application/fhir+json"
-});
+
 
 JsonRoutes.add("post", "/fhir/Patient", function (req, res, next) {
   process.env.DEBUG && console.log('POST /fhir/Patient/', req.body);
