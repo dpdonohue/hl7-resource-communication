@@ -5,6 +5,39 @@ JsonRoutes.Middleware.use(
 
 
 
+// this is temporary fix until PR 132 can be merged in
+// https://github.com/stubailo/meteor-rest/pull/132
+
+JsonRoutes.sendResult = function (res, options) {
+  options = options || {};
+
+  // Set status code on response
+  res.statusCode = options.code || 200;
+
+  // Set response body
+  if (options.data !== undefined) {
+    var shouldPrettyPrint = (process.env.NODE_ENV === 'development');
+    var spacer = shouldPrettyPrint ? 2 : null;
+    res.setHeader('Content-type', 'application/json');
+    res.write(JSON.stringify(options.data, null, spacer));
+  }
+
+  // We've already set global headers on response, but if they
+  // pass in more here, we set those.
+  if (options.headers) {
+    //setHeaders(res, options.headers);
+    options.headers.forEach(function(value, key){
+      res.setHeader(key, value);
+    });
+  }
+
+  // Send the response
+  res.end();
+};
+
+
+
+
 JsonRoutes.add("get", "/fhir/Patient/:id", function (req, res, next) {
   process.env.DEBUG && console.log('GET /fhir/Patient/' + req.params.id);
   process.env.DEBUG && console.log('GET /fhir/Patient/' + req.query._count);
@@ -223,6 +256,8 @@ JsonRoutes.add("post", "/fhir/Patient", function (req, res, next) {
         if (result) {
           process.env.TRACE && console.log('result', result);
           res.setHeader("Location", "fhir/Patient/" + result);
+          res.setHeader("Last-Modified", new Date());
+          res.setHeader("ETag", "1.6.0");
           JsonRoutes.sendResult(res, {
             code: 201
           });
@@ -278,6 +313,9 @@ JsonRoutes.add("delete", "/fhir/Patient/:id", function (req, res, next) {
     });
   }
 });
+
+
+
 
 
 // WebApp.connectHandlers.use("/fhir/Patient", function(req, res, next) {
