@@ -21,7 +21,7 @@ Package.onUse(function (api) {
   api.use('clinical:base-model@1.3.5');
   api.use('clinical:user-model@1.5.0');
   api.use('clinical:hl7-resource-datatypes@0.6.3');
-  api.use('clinical:hl7-resource-bundle@1.2.5');
+  api.use('clinical:hl7-resource-bundle@1.3.0');
 
   api.imply('clinical:user-model');
 
