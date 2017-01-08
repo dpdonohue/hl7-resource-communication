@@ -173,21 +173,27 @@ JsonRoutes.add("post", "/fhir/Patient/:param", function (req, res, next) {
       process.env.TRACE && console.log('accessToken.userId', accessToken.userId);
     }
 
-    var patientData;
+    var patients = [];
 
     if (req.params.param === '_search') {
       var searchLimit = 1;
       if (req && req.query && req.query._count) {
         searchLimit = parseInt(req.query._count);
       }
-      patientData = Patients.fetchBundle({}, {limit: searchLimit});
+      patients = Patients.find({}, {limit: searchLimit});
+
+      var payload = [];
+
+      patients.forEach(function(record){
+        payload.push(Patients.prepForBundle(record));
+      });
     }
 
-    process.env.TRACE && console.log('patientData', patientData);
+    //process.env.TRACE && console.log('patients', patients);
 
     JsonRoutes.sendResult(res, {
       code: 200,
-      data: patientData
+      data: Bundle.generate(payload)
     });
   } else {
     JsonRoutes.sendResult(res, {
