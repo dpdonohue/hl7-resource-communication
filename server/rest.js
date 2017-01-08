@@ -42,7 +42,6 @@ JsonRoutes.setResponseHeaders({
 
 JsonRoutes.add("get", "/fhir/Patient/:id", function (req, res, next) {
   process.env.DEBUG && console.log('GET /fhir/Patient/' + req.params.id);
-  process.env.DEBUG && console.log('GET /fhir/Patient/' + req.query._count);
 
   res.setHeader("Access-Control-Allow-Origin", "*");
 
@@ -63,14 +62,23 @@ JsonRoutes.add("get", "/fhir/Patient/:id", function (req, res, next) {
     // }
 
     var patientData = Patients.findOne({_id: req.params.id});
-    delete patientData._document;
+    if (patientData) {
+      patientData.id = patientData._id;
 
-    process.env.TRACE && console.log('patientData', patientData);
+      delete patientData._document;
+      delete patientData._id;
 
-    JsonRoutes.sendResult(res, {
-      code: 200,
-      data: patientData
-    });
+      process.env.TRACE && console.log('patientData', patientData);
+
+      JsonRoutes.sendResult(res, {
+        code: 200,
+        data: Patients.prepForFhirTransfer(patientData)
+      });
+    } else {
+      JsonRoutes.sendResult(res, {
+        code: 410
+      });
+    }
   } else {
     JsonRoutes.sendResult(res, {
       code: 401
@@ -105,7 +113,7 @@ JsonRoutes.add("get", "/fhir/Patient/:id/_history", function (req, res, next) {
     var payload = [];
 
     patients.forEach(function(record){
-      payload.push(Patients.prepForBundle(record));
+      payload.push(Patients.prepForFhirTransfer(record));
     });
 
     JsonRoutes.sendResult(res, {
@@ -174,10 +182,10 @@ JsonRoutes.add("put", "/fhir/Patient/:id", function (req, res, next) {
           var payload = [];
 
           patients.forEach(function(record){
-            payload.push(Patients.prepForBundle(record));
+            payload.push(Patients.prepForFhirTransfer(record));
           });
 
-          //console.log("payload", payload);
+          console.log("payload", payload);
 
           JsonRoutes.sendResult(res, {
             code: 200,
@@ -272,7 +280,7 @@ JsonRoutes.add("get", "/fhir/Patient", function (req, res, next) {
     var patients = Patients.find(databaseQuery);
 
     patients.forEach(function(record){
-      payload.push(Patients.prepForBundle(record));
+      payload.push(Patients.prepForFhirTransfer(record));
     });
 
 
@@ -315,7 +323,7 @@ JsonRoutes.add("post", "/fhir/Patient/:param", function (req, res, next) {
       var payload = [];
 
       patients.forEach(function(record){
-        payload.push(Patients.prepForBundle(record));
+        payload.push(Patients.prepForFhirTransfer(record));
       });
     }
 
@@ -381,7 +389,7 @@ JsonRoutes.add("post", "/fhir/Patient", function (req, res, next) {
           var payload = [];
 
           patients.forEach(function(record){
-            payload.push(Patients.prepForBundle(record));
+            payload.push(Patients.prepForFhirTransfer(record));
           });
 
           //console.log("payload", payload);
