@@ -253,7 +253,7 @@ JsonRoutes.add("post", "/fhir/Patient", function (req, res, next) {
           res.setHeader("ETag", "1.6.0");
           JsonRoutes.sendResult(res, {
             code: 201,
-            data: Bundle.generate(Patients.toDtsu3({_id: result}))
+            data: Bundle.generate(Patients.find({_id: result}))
           });
         }
       });
