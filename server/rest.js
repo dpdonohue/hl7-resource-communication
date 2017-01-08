@@ -108,7 +108,7 @@ JsonRoutes.add("get", "/fhir/Patient/:id/_history", function (req, res, next) {
 
     JsonRoutes.sendResult(res, {
       code: 200,
-      data: Bundle.generate(patientData, 'history')
+      data: Bundle.generate(patientData, '')
     });
   } else {
     JsonRoutes.sendResult(res, {
@@ -118,8 +118,8 @@ JsonRoutes.add("get", "/fhir/Patient/:id/_history", function (req, res, next) {
 });
 
 JsonRoutes.add("put", "/fhir/Patient/:id", function (req, res, next) {
-  process.env.DEBUG && console.log('GET /fhir/Patient/' + req.params.id);
-  process.env.DEBUG && console.log('GET /fhir/Patient/' + req.query._count);
+  process.env.DEBUG && console.log('PUT /fhir/Patient/' + req.params.id);
+  process.env.DEBUG && console.log('PUT /fhir/Patient/' + req.query._count);
 
   res.setHeader("Access-Control-Allow-Origin", "*");
 
@@ -146,13 +146,18 @@ JsonRoutes.add("put", "/fhir/Patient/:id", function (req, res, next) {
       delete req.body.id;
       delete req.body.meta;
 
+      patientUpdate.resourceType = "Patient";
       patientUpdate = Patients.toMongo(patientUpdate);
+      patientUpdate = Patients.prepForUpdate(patientUpdate);
 
+
+      process.env.DEBUG && console.log('-----------------------------------------------------------');
       process.env.DEBUG && console.log('patientUpdate', JSON.stringify(patientUpdate, null, 2));
       // process.env.DEBUG && console.log('newPatient', newPatient);
 
       var patientId = Patients.update({_id: req.params.id}, {$set: patientUpdate },  function(error, result){
         if (error) {
+          //console.log('PUT /fhir/Patient/' + req.params.id + "[error]", error);
           JsonRoutes.sendResult(res, {
             code: 400
           });
@@ -163,7 +168,7 @@ JsonRoutes.add("put", "/fhir/Patient/:id", function (req, res, next) {
           res.setHeader("Last-Modified", new Date());
           res.setHeader("ETag", "1.6.0");
 
-          var patients = Patients.find({_id: result});
+          var patients = Patients.find({_id: req.params.id});
           var payload = [];
 
           patients.forEach(function(record){
