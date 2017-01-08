@@ -267,7 +267,15 @@ JsonRoutes.add("get", "/fhir/Patient", function (req, res, next) {
       databaseQuery['gender'] = req.query.gender;
     }
     if (req.query.birthdate) {
-      databaseQuery['birthDate'] = req.query.birthdate;
+      var dateArray = req.query.birthdate.split("-");
+      var minDate = dateArray[0] + "-" + parseInt(dateArray[1]) + "-" + (parseInt(dateArray[2])) + 'T00:00:00.000Z';
+      var maxDate = dateArray[0] + "-" + parseInt(dateArray[1]) + "-" + (parseInt(dateArray[2]) + 1) + 'T00:00:00.000Z';
+      console.log("minDateArray", minDate, maxDate);
+
+      databaseQuery['birthDate'] = {
+        "$gte" : new Date(minDate),
+        "$lt" :  new Date(maxDate)
+      };
     }
 
     process.env.DEBUG && console.log('databaseQuery', databaseQuery);
