@@ -199,7 +199,7 @@ JsonRoutes.add("post", "/fhir/Patient/:param", function (req, res, next) {
 
 
 JsonRoutes.add("post", "/fhir/Patient", function (req, res, next) {
-  process.env.DEBUG && console.log('POST /fhir/Patient/', req.body);
+  //process.env.DEBUG && console.log('POST /fhir/Patient/', JSON.stringify(req.body, null, 2));
 
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("content-type", "application/fhir+json");
@@ -219,22 +219,28 @@ JsonRoutes.add("post", "/fhir/Patient", function (req, res, next) {
 
     if (req.body) {
       newPatient = req.body;
-      PatientSchema.clean(newPatient);
 
+      //PatientSchema.clean(newPatient);
+
+      // FHIR v1.8.0
       // make sure names are properly formatted
-      newPatient.name.forEach(function(name){
-        HumanName.clean(name);
-      });
-      newPatient.contact.forEach(function(contact){
-        HumanName.clean(contact.name);
-      });
+      // newPatient.name.forEach(function(name){
+      //   HumanName.clean(name);
+      // });
+      // newPatient.contact.forEach(function(contact){
+      //   HumanName.clean(contact.name);
+      // });
 
       // remove id and meta, if we're recycling a resource
       delete req.body.id;
       delete req.body.meta;
 
+      newPatient = Patients.toMongo(newPatient);
 
-      var patientId = Patients.insert(newPatient, function(error, result){
+      process.env.DEBUG && console.log('newPatient', JSON.stringify(newPatient, null, 2));
+      // process.env.DEBUG && console.log('newPatient', newPatient);
+
+      var patientId = Patients.insert(newPatient,  function(error, result){
         if (error) {
           JsonRoutes.sendResult(res, {
             code: 400
@@ -247,7 +253,7 @@ JsonRoutes.add("post", "/fhir/Patient", function (req, res, next) {
           res.setHeader("ETag", "1.6.0");
           JsonRoutes.sendResult(res, {
             code: 201,
-            data: Bundle.generate(Patients.find({_id: result}))
+            data: Bundle.generate(Patients.toDtsu3({_id: result}))
           });
         }
       });
