@@ -180,7 +180,7 @@ JsonRoutes.add("put", "/fhir/Patient/:id", function (req, res, next) {
           //console.log("payload", payload);
 
           JsonRoutes.sendResult(res, {
-            code: 201,
+            code: 200,
             data: Bundle.generate(payload)
           });
         }
