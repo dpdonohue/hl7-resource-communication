@@ -101,14 +101,16 @@ JsonRoutes.add("get", "/fhir/Patient/:id/_history", function (req, res, next) {
     //   }});
     // }
 
-    var patientData = Patients.findOne({_id: req.params.id});
-    delete patientData._document;
+    var patients = Patients.find({_id: req.params.id});
+    var payload = [];
 
-    process.env.TRACE && console.log('patientData', patientData);
+    patients.forEach(function(record){
+      payload.push(Patients.prepForBundle(record));
+    });
 
     JsonRoutes.sendResult(res, {
       code: 200,
-      data: Bundle.generate(patientData, '')
+      data: Bundle.generate(payload, 'history')
     });
   } else {
     JsonRoutes.sendResult(res, {
@@ -421,7 +423,7 @@ JsonRoutes.add("delete", "/fhir/Patient/:id", function (req, res, next) {
       process.env.TRACE && console.log('accessToken.userId', accessToken.userId);
     }
 
-    if (Patients.findOne({_id: req.params.id}).count() === 0) {
+    if (Patients.find({_id: req.params.id}).count() === 0) {
       JsonRoutes.sendResult(res, {
         code: 410
       });
