@@ -79,6 +79,121 @@ JsonRoutes.add("get", "/fhir/Patient/:id", function (req, res, next) {
 });
 
 
+JsonRoutes.add("get", "/fhir/Patient/:id/_history", function (req, res, next) {
+  process.env.DEBUG && console.log('GET /fhir/Patient/' + req.params.id);
+  process.env.DEBUG && console.log('GET /fhir/Patient/' + req.query._count);
+
+  res.setHeader("Access-Control-Allow-Origin", "*");
+
+  var accessTokenStr = (req.params && req.params.access_token) || (req.query && req.query.access_token);
+  var accessToken = oAuth2Server.collections.accessToken.findOne({accessToken: accessTokenStr});
+
+  if (accessToken || process.env.NOAUTH || Meteor.settings.private.disableOauth) {
+
+    if (accessToken) {
+      process.env.TRACE && console.log('accessToken', accessToken);
+      process.env.TRACE && console.log('accessToken.userId', accessToken.userId);
+    }
+
+    // if (typeof SiteStatistics === "object") {
+    //   SiteStatistics.update({_id: "configuration"}, {$inc:{
+    //     "Patients.count.read": 1
+    //   }});
+    // }
+
+    var patientData = Patients.findOne({_id: req.params.id});
+    delete patientData._document;
+
+    process.env.TRACE && console.log('patientData', patientData);
+
+    JsonRoutes.sendResult(res, {
+      code: 200,
+      data: Bundle.generate(patientData, 'history')
+    });
+  } else {
+    JsonRoutes.sendResult(res, {
+      code: 401
+    });
+  }
+});
+
+JsonRoutes.add("put", "/fhir/Patient/:id", function (req, res, next) {
+  process.env.DEBUG && console.log('GET /fhir/Patient/' + req.params.id);
+  process.env.DEBUG && console.log('GET /fhir/Patient/' + req.query._count);
+
+  res.setHeader("Access-Control-Allow-Origin", "*");
+
+  var accessTokenStr = (req.params && req.params.access_token) || (req.query && req.query.access_token);
+  var accessToken = oAuth2Server.collections.accessToken.findOne({accessToken: accessTokenStr});
+
+  if (accessToken || process.env.NOAUTH || Meteor.settings.private.disableOauth) {
+
+    if (accessToken) {
+      process.env.TRACE && console.log('accessToken', accessToken);
+      process.env.TRACE && console.log('accessToken.userId', accessToken.userId);
+    }
+
+    // if (typeof SiteStatistics === "object") {
+    //   SiteStatistics.update({_id: "configuration"}, {$inc:{
+    //     "Patients.count.read": 1
+    //   }});
+    // }
+
+    if (req.body) {
+      patientUpdate = req.body;
+
+      // remove id and meta, if we're recycling a resource
+      delete req.body.id;
+      delete req.body.meta;
+
+      patientUpdate = Patients.toMongo(patientUpdate);
+
+      process.env.DEBUG && console.log('patientUpdate', JSON.stringify(patientUpdate, null, 2));
+      // process.env.DEBUG && console.log('newPatient', newPatient);
+
+      var patientId = Patients.update({_id: req.params.id}, {$set: patientUpdate },  function(error, result){
+        if (error) {
+          JsonRoutes.sendResult(res, {
+            code: 400
+          });
+        }
+        if (result) {
+          process.env.TRACE && console.log('result', result);
+          res.setHeader("Location", "fhir/Patient/" + result);
+          res.setHeader("Last-Modified", new Date());
+          res.setHeader("ETag", "1.6.0");
+
+          var patients = Patients.find({_id: result});
+          var payload = [];
+
+          patients.forEach(function(record){
+            payload.push(Patients.prepForBundle(record));
+          });
+
+          //console.log("payload", payload);
+
+          JsonRoutes.sendResult(res, {
+            code: 201,
+            data: Bundle.generate(payload)
+          });
+        }
+      });
+    } else {
+      JsonRoutes.sendResult(res, {
+        code: 422
+      });
+
+    }
+
+
+
+  } else {
+    JsonRoutes.sendResult(res, {
+      code: 401
+    });
+  }
+});
+
 
 JsonRoutes.add("get", "/fhir/Patient", function (req, res, next) {
   process.env.DEBUG && console.log('GET /fhir/Patient', req.query);
@@ -234,17 +349,6 @@ JsonRoutes.add("post", "/fhir/Patient", function (req, res, next) {
     if (req.body) {
       newPatient = req.body;
 
-      //PatientSchema.clean(newPatient);
-
-      // FHIR v1.8.0
-      // make sure names are properly formatted
-      // newPatient.name.forEach(function(name){
-      //   HumanName.clean(name);
-      // });
-      // newPatient.contact.forEach(function(contact){
-      //   HumanName.clean(contact.name);
-      // });
-
       // remove id and meta, if we're recycling a resource
       delete req.body.id;
       delete req.body.meta;
@@ -312,18 +416,25 @@ JsonRoutes.add("delete", "/fhir/Patient/:id", function (req, res, next) {
       process.env.TRACE && console.log('accessToken.userId', accessToken.userId);
     }
 
-    Patients.remove({_id: req.params.id}, function(error, result){
-      if (result) {
-        JsonRoutes.sendResult(res, {
-          code: 204
-        });
-      }
-      if (error) {
-        JsonRoutes.sendResult(res, {
-          code: 409
-        });
-      }
-    });
+    if (Patients.findOne({_id: req.params.id}).count() === 0) {
+      JsonRoutes.sendResult(res, {
+        code: 410
+      });
+    } else {
+      Patients.remove({_id: req.params.id}, function(error, result){
+        if (result) {
+          JsonRoutes.sendResult(res, {
+            code: 204
+          });
+        }
+        if (error) {
+          JsonRoutes.sendResult(res, {
+            code: 409
+          });
+        }
+      });
+    }
+
 
   } else {
     JsonRoutes.sendResult(res, {
