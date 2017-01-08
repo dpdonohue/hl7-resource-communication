@@ -140,7 +140,7 @@ JsonRoutes.add("get", "/fhir/Patient", function (req, res, next) {
       databaseQuery['birthDate'] = req.query.birthdate;
     }
 
-    //process.env.DEBUG && console.log('databaseQuery', databaseQuery);
+    process.env.DEBUG && console.log('databaseQuery', databaseQuery);
     //process.env.DEBUG && console.log('Patients.find(id)', Patients.find(databaseQuery).fetch());
 
     // var searchLimit = 1;
