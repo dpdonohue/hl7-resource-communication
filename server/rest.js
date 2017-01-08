@@ -251,9 +251,19 @@ JsonRoutes.add("post", "/fhir/Patient", function (req, res, next) {
           res.setHeader("Location", "fhir/Patient/" + result);
           res.setHeader("Last-Modified", new Date());
           res.setHeader("ETag", "1.6.0");
+
+          var patients = Patients.find({_id: result});
+          var payload = [];
+
+          patients.forEach(function(record){
+            payload.push(Patients.prepForBundle(record));
+          });
+
+          //console.log("payload", payload);
+
           JsonRoutes.sendResult(res, {
             code: 201,
-            data: Bundle.generate(Patients.prepForBundle(Patients.find({_id: result})))
+            data: Bundle.generate(payload)
           });
         }
       });
