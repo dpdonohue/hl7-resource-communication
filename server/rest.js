@@ -40,8 +40,8 @@ JsonRoutes.setResponseHeaders({
 });
 
 
-JsonRoutes.add("get", "/fhir/Patient/:id", function (req, res, next) {
-  process.env.DEBUG && console.log('GET /fhir/Patient/' + req.params.id);
+JsonRoutes.add("get", "/fhir-1.6.0/Patient/:id", function (req, res, next) {
+  process.env.DEBUG && console.log('GET /fhir-1.6.0/Patient/' + req.params.id);
 
   res.setHeader("Access-Control-Allow-Origin", "*");
 
@@ -87,9 +87,9 @@ JsonRoutes.add("get", "/fhir/Patient/:id", function (req, res, next) {
 });
 
 
-JsonRoutes.add("get", "/fhir/Patient/:id/_history", function (req, res, next) {
-  process.env.DEBUG && console.log('GET /fhir/Patient/' + req.params.id);
-  process.env.DEBUG && console.log('GET /fhir/Patient/' + req.query._count);
+JsonRoutes.add("get", "/fhir-1.6.0/Patient/:id/_history", function (req, res, next) {
+  process.env.DEBUG && console.log('GET /fhir-1.6.0/Patient/' + req.params.id);
+  process.env.DEBUG && console.log('GET /fhir-1.6.0/Patient/' + req.query._count);
 
   res.setHeader("Access-Control-Allow-Origin", "*");
 
@@ -127,9 +127,9 @@ JsonRoutes.add("get", "/fhir/Patient/:id/_history", function (req, res, next) {
   }
 });
 
-JsonRoutes.add("put", "/fhir/Patient/:id", function (req, res, next) {
-  process.env.DEBUG && console.log('PUT /fhir/Patient/' + req.params.id);
-  process.env.DEBUG && console.log('PUT /fhir/Patient/' + req.query._count);
+JsonRoutes.add("put", "/fhir-1.6.0/Patient/:id", function (req, res, next) {
+  process.env.DEBUG && console.log('PUT /fhir-1.6.0/Patient/' + req.params.id);
+  process.env.DEBUG && console.log('PUT /fhir-1.6.0/Patient/' + req.query._count);
 
   res.setHeader("Access-Control-Allow-Origin", "*");
 
@@ -265,8 +265,8 @@ generateDatabaseQuery = function(query){
   return databaseQuery;
 }
 
-JsonRoutes.add("get", "/fhir/Patient", function (req, res, next) {
-  process.env.DEBUG && console.log('GET /fhir/Patient', req.query);
+JsonRoutes.add("get", "/fhir-1.6.0/Patient", function (req, res, next) {
+  process.env.DEBUG && console.log('GET /fhir-1.6.0/Patient', req.query);
   // console.log('GET /fhir/Patient', req.query);
   // console.log('process.env.DEBUG', process.env.DEBUG);
 
@@ -315,8 +315,8 @@ JsonRoutes.add("get", "/fhir/Patient", function (req, res, next) {
 });
 
 
-JsonRoutes.add("post", "/fhir/Patient/:param", function (req, res, next) {
-  process.env.DEBUG && console.log('POST /fhir/Patient/' + JSON.stringify(req.query));
+JsonRoutes.add("post", "/fhir-1.6.0/Patient/:param", function (req, res, next) {
+  process.env.DEBUG && console.log('POST /fhir-1.6.0/Patient/' + JSON.stringify(req.query));
 
   res.setHeader("Access-Control-Allow-Origin", "*");
 
@@ -365,7 +365,7 @@ JsonRoutes.add("post", "/fhir/Patient/:param", function (req, res, next) {
 
 
 
-JsonRoutes.add("post", "/fhir/Patient", function (req, res, next) {
+JsonRoutes.add("post", "/fhir-1.6.0/Patient", function (req, res, next) {
   //process.env.DEBUG && console.log('POST /fhir/Patient/', JSON.stringify(req.body, null, 2));
 
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -404,7 +404,7 @@ JsonRoutes.add("post", "/fhir/Patient", function (req, res, next) {
         }
         if (result) {
           process.env.TRACE && console.log('result', result);
-          res.setHeader("Location", "fhir/Patient/" + result);
+          res.setHeader("Location", "fhir-1.6.0/Patient/" + result);
           res.setHeader("Last-Modified", new Date());
           res.setHeader("ETag", "1.6.0");
 
@@ -439,8 +439,8 @@ JsonRoutes.add("post", "/fhir/Patient", function (req, res, next) {
 
 
 
-JsonRoutes.add("delete", "/fhir/Patient/:id", function (req, res, next) {
-  process.env.DEBUG && console.log('DELETE /fhir/Patient/' + req.params.id);
+JsonRoutes.add("delete", "/fhir-1.6.0/Patient/:id", function (req, res, next) {
+  process.env.DEBUG && console.log('DELETE /fhir-1.6.0/Patient/' + req.params.id);
 
   res.setHeader("Access-Control-Allow-Origin", "*");
 
