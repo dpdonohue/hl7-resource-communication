@@ -232,7 +232,10 @@ generateDatabaseQuery = function(query){
   if (query.name) {
     databaseQuery['name'] = {
       $elemMatch: {
-        'text': query.name
+        'text': {
+          $regex: query.name,
+          $options: 'i'
+        }
       }
     };
   }
