@@ -210,6 +210,58 @@ JsonRoutes.add("put", "/fhir/Patient/:id", function (req, res, next) {
 });
 
 
+generateDatabaseQuery = function(query){
+  console.log("generateDatabaseQuery", query);
+
+  var databaseQuery = {};
+
+  if (query.family) {
+    databaseQuery['name'] = {
+      $elemMatch: {
+        'family': query.family
+      }
+    };
+  }
+  if (query.given) {
+    databaseQuery['name'] = {
+      $elemMatch: {
+        'given': query.given
+      }
+    };
+  }
+  if (query.name) {
+    databaseQuery['name'] = {
+      $elemMatch: {
+        'text': query.name
+      }
+    };
+  }
+  if (query.identifier) {
+    databaseQuery['identifier'] = {
+      $elemMatch: {
+        'value': query.identifier
+      }
+    };
+  }
+  if (query.gender) {
+    databaseQuery['gender'] = query.gender;
+  }
+  if (query.birthdate) {
+    var dateArray = query.birthdate.split("-");
+    var minDate = dateArray[0] + "-" + dateArray[1] + "-" + (parseInt(dateArray[2])) + 'T00:00:00.000Z';
+    var maxDate = dateArray[0] + "-" + dateArray[1] + "-" + (parseInt(dateArray[2]) + 1) + 'T00:00:00.000Z';
+    console.log("minDateArray", minDate, maxDate);
+
+    databaseQuery['birthDate'] = {
+      "$gte" : new Date(minDate),
+      "$lt" :  new Date(maxDate)
+    };
+  }
+
+  process.env.DEBUG && console.log('databaseQuery', databaseQuery);
+  return databaseQuery;
+}
+
 JsonRoutes.add("get", "/fhir/Patient", function (req, res, next) {
   process.env.DEBUG && console.log('GET /fhir/Patient', req.query);
   // console.log('GET /fhir/Patient', req.query);
@@ -233,52 +285,8 @@ JsonRoutes.add("get", "/fhir/Patient", function (req, res, next) {
     //   }});
     // }
 
-    var databaseQuery = {};
+    var databaseQuery = generateDatabaseQuery(req.query);
 
-    if (req.query.family) {
-      databaseQuery['name'] = {
-        $elemMatch: {
-          'family': req.query.family
-        }
-      };
-    }
-    if (req.query.given) {
-      databaseQuery['name'] = {
-        $elemMatch: {
-          'given': req.query.given
-        }
-      };
-    }
-    if (req.query.name) {
-      databaseQuery['name'] = {
-        $elemMatch: {
-          'text': req.query.name
-        }
-      };
-    }
-    if (req.query.identifier) {
-      databaseQuery['identifier'] = {
-        $elemMatch: {
-          'value': req.query.identifier
-        }
-      };
-    }
-    if (req.query.gender) {
-      databaseQuery['gender'] = req.query.gender;
-    }
-    if (req.query.birthdate) {
-      var dateArray = req.query.birthdate.split("-");
-      var minDate = dateArray[0] + "-" + parseInt(dateArray[1]) + "-" + (parseInt(dateArray[2])) + 'T00:00:00.000Z';
-      var maxDate = dateArray[0] + "-" + parseInt(dateArray[1]) + "-" + (parseInt(dateArray[2]) + 1) + 'T00:00:00.000Z';
-      console.log("minDateArray", minDate, maxDate);
-
-      databaseQuery['birthDate'] = {
-        "$gte" : new Date(minDate),
-        "$lt" :  new Date(maxDate)
-      };
-    }
-
-    process.env.DEBUG && console.log('databaseQuery', databaseQuery);
     //process.env.DEBUG && console.log('Patients.find(id)', Patients.find(databaseQuery).fetch());
 
     // var searchLimit = 1;
@@ -321,12 +329,16 @@ JsonRoutes.add("post", "/fhir/Patient/:param", function (req, res, next) {
 
     var patients = [];
 
-    if (req.params.param === '_search') {
+    if (req.params.param.includes('_search')) {
       var searchLimit = 1;
       if (req && req.query && req.query._count) {
         searchLimit = parseInt(req.query._count);
       }
-      patients = Patients.find({}, {limit: searchLimit});
+
+      var databaseQuery = generateDatabaseQuery(req.query);
+      process.env.DEBUG && console.log('databaseQuery', databaseQuery);
+
+      patients = Patients.find(databaseQuery, {limit: searchLimit});
 
       var payload = [];
 
