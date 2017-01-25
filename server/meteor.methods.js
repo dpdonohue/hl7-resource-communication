@@ -11,13 +11,25 @@ Meteor.methods({
         if (error) {
           console.log(error);
           if (typeof HipaaLogger === 'object') {
-            HipaaLogger.logEvent('error', Meteor.userId(), Meteor.user().getPrimaryEmail(), 'Patients', null, null, null, error);
+            // HipaaLogger.logEvent('error', Meteor.userId(), Meteor.user().getPrimaryEmail(), 'Patients', null, null, null, error);
+            HipaaLogger.logEvent({
+              eventType: "error",
+              userId: Meteor.userId(),
+              userName: Meteor.user().fullName(),
+              collectionName: "Patients"
+            });
           }
         }
         if (result) {
           console.log('Patient created: ' + result);
           if (typeof HipaaLogger === 'object') {
-            HipaaLogger.logEvent('create', Meteor.userId(), Meteor.user().getPrimaryEmail(), 'Patients', null, null, null, null);
+            // HipaaLogger.logEvent('create', Meteor.userId(), Meteor.user().getPrimaryEmail(), 'Patients', null, null, null, null);
+            HipaaLogger.logEvent({
+              eventType: "create",
+              userId: Meteor.userId(),
+              userName: Meteor.user().fullName(),
+              collectionName: "Patients"
+            });
           }
         }
       });
