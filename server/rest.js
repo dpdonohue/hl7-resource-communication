@@ -314,7 +314,7 @@ JsonRoutes.add("get", "/fhir-1.6.0/Patient", function (req, res, next) {
   }
 });
 
-
+// This is actually a search function
 JsonRoutes.add("post", "/fhir-1.6.0/Patient/:param", function (req, res, next) {
   process.env.DEBUG && console.log('POST /fhir-1.6.0/Patient/' + JSON.stringify(req.query));
 
@@ -388,8 +388,12 @@ JsonRoutes.add("post", "/fhir-1.6.0/Patient", function (req, res, next) {
       newPatient = req.body;
 
       // remove id and meta, if we're recycling a resource
-      delete req.body.id;
-      delete req.body.meta;
+      delete newPatient.id;
+      delete newPatient.meta;
+
+      if (newPatient.birthDate) {
+        newPatient.birthDate = moment(newPatient.birthDate);
+      }
 
       newPatient = Patients.toMongo(newPatient);
 
