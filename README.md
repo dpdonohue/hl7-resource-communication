@@ -2,21 +2,21 @@
 
 HL7 FHIR Resource - Patient
 
---------------------------------------------
+--------------------------------------------  
 #### Conformance Statement  
 
 The resource in this package implements the FHIR Patient Resource schema provided at  [https://www.hl7.org/fhir/patient.html](https://www.hl7.org/fhir/patient.html).  
 
-===============================
+--------------------------------------------  
 #### Installation  
 
-````bash
+```bash
 meteor add clinical:hl-7-resource-patient
-````
+```
 
 
-===============================
-#### Example   
+--------------------------------------------  
+#### Example    
 
 ```js
 var newPatient = {
@@ -53,8 +53,8 @@ var newPatient = {
 Patients.insert(newPatient);
 ```
 
-===============================
-#### Extending the Schema
+--------------------------------------------  
+#### Extending the Schema  
 
 ```js
 ExtendedPatientSchema = new SimpleSchema([
@@ -70,7 +70,7 @@ Patients.attachSchema( ExtendedPatientSchema );
 ```
 
 
-===============================
-#### Licensing  
+--------------------------------------------  
+#### Licensing   
 
 ![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)
