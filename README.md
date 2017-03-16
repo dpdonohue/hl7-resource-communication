@@ -1,8 +1,8 @@
-##clinical:hl7-resource-patient  
+##  clinical:hl7-resource-patient   
 
 HL7 FHIR Resource - Patient
 
-=========================================
+--------------------------------------------
 #### Conformance Statement  
 
 The resource in this package implements the FHIR Patient Resource schema provided at  [https://www.hl7.org/fhir/patient.html](https://www.hl7.org/fhir/patient.html).  
