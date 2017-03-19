@@ -2,10 +2,12 @@
 
 HL7 FHIR Resource - Patient
 
+
 --------------------------------------------  
-#### Conformance Statement  
+#### Schema  
 
 The resource in this package implements the FHIR Patient Resource schema provided at  [https://www.hl7.org/fhir/patient.html](https://www.hl7.org/fhir/patient.html).  
+
 
 --------------------------------------------  
 #### Installation  
@@ -66,6 +68,11 @@ ExtendedPatientSchema = new SimpleSchema([
 ]);
 Patients.attachSchema( ExtendedPatientSchema );
 ```
+
+--------------------------------------------  
+#### Conformance Statement  
+
+
 
 
 --------------------------------------------  
