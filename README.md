@@ -6,7 +6,7 @@ HL7 FHIR Resource - Patient
 --------------------------------------------  
 #### Schema Version 
 
-The resource in this package implements the `FHIR 1.6.0 - STU3 Ballot` versoin of the Patient resource schema, specified at  [http://hl7.org/fhir/2016Sep/patient.html](http://hl7.org/fhir/2016Sep/patient.html).  
+The resource in this package implements the `FHIR 1.6.0 - STU3 Ballot` version of the Patient resource schema, specified at  [http://hl7.org/fhir/2016Sep/patient.html](http://hl7.org/fhir/2016Sep/patient.html).  
 
 
 --------------------------------------------  
