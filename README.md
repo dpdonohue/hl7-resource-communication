@@ -4,9 +4,9 @@ HL7 FHIR Resource - Patient
 
 
 --------------------------------------------  
-#### Schema  
+#### Schema Version 
 
-The resource in this package implements the FHIR Patient Resource schema provided at  [https://www.hl7.org/fhir/patient.html](https://www.hl7.org/fhir/patient.html).  
+The resource in this package implements the `FHIR 1.6.0 - STU3 Ballot` versoin of the Patient resource schema, specified at  [http://hl7.org/fhir/2016Sep/patient.html](http://hl7.org/fhir/2016Sep/patient.html).  
 
 
 --------------------------------------------  
@@ -14,6 +14,12 @@ The resource in this package implements the FHIR Patient Resource schema provide
 
 ```bash
 meteor add clinical:hl7-resource-patient
+```
+
+You may also wish to install the `autopublish` package, which will set up a default publication/subscription of the Patients collection for logged in users.  You will need to remove the package before going into production, however.
+
+```bash
+meteor add clinical:autopublish  
 ```
 
 
@@ -67,6 +73,42 @@ ExtendedPatientSchema = new SimpleSchema([
   }
 ]);
 Patients.attachSchema( ExtendedPatientSchema );
+```
+
+--------------------------------------------  
+#### Initialize a Sample Patient  
+
+Call the `initializePatient` method to create a sample patient in the Patients collection.
+
+```js
+Meteor.startup(function(){
+  Meteor.call('initializePatient');
+})
+```
+--------------------------------------------  
+#### Server Methods  
+
+This package supports `createPatient`, `initializePatient`, and `dropPatient` methods.
+
+--------------------------------------------  
+#### REST API Points    
+
+This package supports the following REST API endpoints.  All endpoints require an OAuth token.  
+
+```
+GET    /fhir-1.6.0/Patient/:id    
+GET    /fhir-1.6.0/Patient/:id/_history  
+PUT    /fhir-1.6.0/Patient/:id  
+GET    /fhir-1.6.0/Patient  
+POST   /fhir-1.6.0/Patient/:param  
+POST   /fhir-1.6.0/Patient  
+DELETE /fhir-1.6.0/Patient/:id
+```
+
+If you would like to test the REST API without the OAuth infrastructure, launch the app with the `NOAUTH` environment variable, or set `Meteor.settings.private.disableOauth` to true in you settings file.
+
+```bash
+NOAUTH=true meteor
 ```
 
 --------------------------------------------  
