@@ -62,6 +62,8 @@ Patients.insert(newPatient);
 --------------------------------------------  
 #### Extending the Schema  
 
+If you have extra fields that you would like to attach to the schema, extend the schema like so:  
+
 ```js
 ExtendedPatientSchema = new SimpleSchema([
   PatientSchema,
