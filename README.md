@@ -11,7 +11,7 @@ The resource in this package implements the FHIR Patient Resource schema provide
 #### Installation  
 
 ```bash
-meteor add clinical:hl-7-resource-patient
+meteor add clinical:hl7-resource-patient
 ```
 
 
@@ -30,8 +30,7 @@ var newPatient = {
   ],
   'active' : true,
   'gender' : 'female',
-  'identifier' : [
-    {
+  'identifier' : [{
       'use' : 'usual',
       'type' : {
         text: 'Medical record number',
@@ -45,8 +44,7 @@ var newPatient = {
       'system' : 'urn:oid:1.2.36.146.595.217.0.1',
       'value' : '123',
       'period' : {}
-    }
-  ],
+   }],
   'birthdate' : new Date(1970, 1, 25),
   'resourceType' : 'Patient'
 };
