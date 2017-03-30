@@ -1,7 +1,13 @@
-JsonRoutes.Middleware.use(
-  '/api/*',
-  oAuth2Server.oauthserver.authorise()   // OAUTH FLOW - A7.1
-);
+
+ 
+ if(typeof oAuth2Server === "object"){
+  JsonRoutes.Middleware.use(
+    '/api/*',
+    oAuth2Server.oauthserver.authorise()   // OAUTH FLOW - A7.1
+  );
+}
+
+
 
 
 
@@ -48,7 +54,11 @@ JsonRoutes.add("get", "/fhir-1.6.0/Patient/:id", function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
 
   var accessTokenStr = (req.params && req.params.access_token) || (req.query && req.query.access_token);
-  var accessToken = oAuth2Server.collections.accessToken.findOne({accessToken: accessTokenStr});
+
+  var accessToken;
+  if(typeof oAuth2Server === "object"){
+    accessToken = oAuth2Server.collections.accessToken.findOne({accessToken: accessTokenStr});
+  }
 
   if (accessToken || process.env.NOAUTH || Meteor.settings.private.disableOauth) {
 
@@ -96,7 +106,10 @@ JsonRoutes.add("get", "/fhir-1.6.0/Patient/:id/_history", function (req, res, ne
   res.setHeader("Access-Control-Allow-Origin", "*");
 
   var accessTokenStr = (req.params && req.params.access_token) || (req.query && req.query.access_token);
-  var accessToken = oAuth2Server.collections.accessToken.findOne({accessToken: accessTokenStr});
+  var accessToken;
+  if(typeof oAuth2Server === "object"){
+    accessToken = oAuth2Server.collections.accessToken.findOne({accessToken: accessTokenStr});
+  }
 
   if (accessToken || process.env.NOAUTH || Meteor.settings.private.disableOauth) {
 
@@ -136,7 +149,10 @@ JsonRoutes.add("put", "/fhir-1.6.0/Patient/:id", function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
 
   var accessTokenStr = (req.params && req.params.access_token) || (req.query && req.query.access_token);
-  var accessToken = oAuth2Server.collections.accessToken.findOne({accessToken: accessTokenStr});
+  var accessToken;
+  if(typeof oAuth2Server === "object"){
+    accessToken = oAuth2Server.collections.accessToken.findOne({accessToken: accessTokenStr});
+  }
 
   if (accessToken || process.env.NOAUTH || Meteor.settings.private.disableOauth) {
 
@@ -275,7 +291,10 @@ JsonRoutes.add("get", "/fhir-1.6.0/Patient", function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
 
   var accessTokenStr = (req.params && req.params.access_token) || (req.query && req.query.access_token);
-  var accessToken = oAuth2Server.collections.accessToken.findOne({accessToken: accessTokenStr});
+  var accessToken;
+  if(typeof oAuth2Server === "object"){
+    accessToken = oAuth2Server.collections.accessToken.findOne({accessToken: accessTokenStr});
+  }
 
   if (accessToken || process.env.NOAUTH || Meteor.settings.private.disableOauth) {
 
@@ -323,7 +342,10 @@ JsonRoutes.add("post", "/fhir-1.6.0/Patient/:param", function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
 
   var accessTokenStr = (req.params && req.params.access_token) || (req.query && req.query.access_token);
-  var accessToken = oAuth2Server.collections.accessToken.findOne({accessToken: accessTokenStr});
+  var accessToken;
+  if(typeof oAuth2Server === "object"){
+    accessToken = oAuth2Server.collections.accessToken.findOne({accessToken: accessTokenStr});
+  }
 
   if (accessToken || process.env.NOAUTH || Meteor.settings.private.disableOauth) {
 
@@ -374,7 +396,10 @@ JsonRoutes.add("post", "/fhir-1.6.0/Patient", function (req, res, next) {
   res.setHeader("content-type", "application/fhir+json");
 
   var accessTokenStr = (req.params && req.params.access_token) || (req.query && req.query.access_token);
-  var accessToken = oAuth2Server.collections.accessToken.findOne({accessToken: accessTokenStr});
+  var accessToken;
+  if(typeof oAuth2Server === "object"){
+    accessToken = oAuth2Server.collections.accessToken.findOne({accessToken: accessTokenStr});
+  }
 
   if (accessToken || process.env.NOAUTH || Meteor.settings.private.disableOauth) {
 
@@ -451,7 +476,10 @@ JsonRoutes.add("delete", "/fhir-1.6.0/Patient/:id", function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
 
   var accessTokenStr = (req.params && req.params.access_token) || (req.query && req.query.access_token);
-  var accessToken = oAuth2Server.collections.accessToken.findOne({accessToken: accessTokenStr});
+  var accessToken;
+  if(typeof oAuth2Server === "object"){
+    accessToken = oAuth2Server.collections.accessToken.findOne({accessToken: accessTokenStr});
+  }
 
   if (accessToken || process.env.NOAUTH || Meteor.settings.private.disableOauth) {
 
