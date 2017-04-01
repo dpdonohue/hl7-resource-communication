@@ -36,7 +36,7 @@ JsonRoutes.sendResult = function (res, options) {
   // Set response body
   if (options.data !== undefined) {
     var shouldPrettyPrint = (process.env.NODE_ENV === 'development');
-    var spacer = shouldPrettyPrint ? 2 : null;
+    var spacer = shouldPrettyPrint ? 2 : null;cd .
     res.setHeader('Content-type', 'application/fhir+json');
     res.write(JSON.stringify(options.data, null, spacer));
   }
