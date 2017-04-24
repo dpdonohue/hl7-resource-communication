@@ -1,6 +1,6 @@
 Package.describe({
   name: 'clinical:hl7-resource-patient',
-  version: '3.0.3',
+  version: '3.0.6',
   summary: 'HL7 FHIR Resource - Patient',
   git: 'https://github.com/clinical-meteor/hl7-resource-patient',
   documentation: 'README.md'
@@ -14,8 +14,6 @@ Package.onUse(function (api) {
   api.use('mongo');
   api.use('aldeed:simple-schema@1.3.3');
   api.use('simple:json-routes@2.1.0');
-  api.use('clinical:fhir-vault-server@0.0.3', ['client', 'server'], {weak: true});
-
   api.use('momentjs:moment@2.17.1');
 
 
@@ -30,6 +28,10 @@ Package.onUse(function (api) {
   api.addFiles('lib/Patients.js');
   api.addFiles('server/rest.js', 'server');
 
+  if(Package['clinical:fhir-vault-server']){
+    api.use('clinical:fhir-vault-server@0.0.3', ['client', 'server'], {weak: true});
+  }
+  
   api.export('Patient');
   api.export('Patients');
   api.export('PatientSchema');
