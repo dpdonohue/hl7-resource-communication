@@ -640,12 +640,12 @@ JsonRoutes.add("delete", "/" + fhirVersion + "/Patient/:id", function (req, res,
         process.env.TRACE && console.log('accessToken.userId', accessToken.userId);
       }
 
-      if (Patients.find({_id: req.params.id}).count() === 0) {
-        // Gone
-        JsonRoutes.sendResult(res, {
-          code: 410
-        });
-      } else {
+      // if (Patients.find({_id: req.params.id}).count() === 0) {
+      //   // Gone
+      //   JsonRoutes.sendResult(res, {
+      //     code: 410
+      //   });
+      // } else {
         Patients.remove({_id: req.params.id}, function(error, result){
           if (result) {
             // No Content
@@ -660,7 +660,7 @@ JsonRoutes.add("delete", "/" + fhirVersion + "/Patient/:id", function (req, res,
             });
           }
         });
-      }
+      // }
 
 
     } else {
