@@ -228,7 +228,7 @@ JsonRoutes.add("get", "/" + fhirVersion + "/Patient/:id", function (req, res, ne
       } else {
         // Gone
         JsonRoutes.sendResult(res, {
-          code: 410
+          code: 204
         });
       }
     } else {
@@ -444,7 +444,7 @@ JsonRoutes.add("get", "/" + fhirVersion + "/Patient/:id/_history/:versionId", fu
       });
     } else {
       JsonRoutes.sendResult(res, {
-        code: 410
+        code: 204
       });
     }
 
@@ -643,7 +643,7 @@ JsonRoutes.add("delete", "/" + fhirVersion + "/Patient/:id", function (req, res,
       // if (Patients.find({_id: req.params.id}).count() === 0) {
       //   // Gone
       //   JsonRoutes.sendResult(res, {
-      //     code: 410
+      //     code: 204
       //   });
       // } else {
         Patients.remove({_id: req.params.id}, function(error, result){
