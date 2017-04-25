@@ -159,7 +159,7 @@ JsonRoutes.add("put", "/" + fhirVersion + "/Patient/:id", function (req, res, ne
 
               // success!
               JsonRoutes.sendResult(res, {
-                code: 200,
+                code: 201,
                 data: Bundle.generate(payload)
               });
             }
