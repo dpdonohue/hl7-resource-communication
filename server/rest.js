@@ -16,7 +16,7 @@ if(typeof oAuth2Server === 'object'){
 }
 
 JsonRoutes.setResponseHeaders({
-  "content-type": "application/fhir+json"
+  "content-type": "application/fhir+json; charset=utf-8"
 });
 
 
@@ -37,7 +37,7 @@ JsonRoutes.sendResult = function (res, options) {
   if (options.data !== undefined) {
     var shouldPrettyPrint = (process.env.NODE_ENV === 'development');
     var spacer = shouldPrettyPrint ? 2 : null;cd .
-    res.setHeader('Content-type', 'application/fhir+json');
+    res.setHeader('Content-type', 'application/fhir+json; charset=utf-8');
     res.write(JSON.stringify(options.data, null, spacer));
   }
 
@@ -65,7 +65,7 @@ JsonRoutes.add("put", "/" + fhirVersion + "/Patient/:id", function (req, res, ne
   //process.env.DEBUG && console.log('PUT /fhir-3.0.0/Patient/' + req.query._count);
 
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("content-type", "application/fhir+json");
+  res.setHeader("content-type", "application/fhir+json; charset=utf-8");
 
   var accessTokenStr = (req.params && req.params.access_token) || (req.query && req.query.access_token);
 
@@ -198,7 +198,7 @@ JsonRoutes.add("get", "/" + fhirVersion + "/Patient/:id", function (req, res, ne
   process.env.DEBUG && console.log('GET /fhir-3.0.0/Patient/' + req.params.id);
 
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("content-type", "application/fhir+json");
+  res.setHeader("content-type", "application/fhir+json; charset=utf-8");
 
   var accessTokenStr = (req.params && req.params.access_token) || (req.query && req.query.access_token);
   if(typeof oAuth2Server === 'object'){
@@ -252,7 +252,7 @@ JsonRoutes.add("post", "/" + fhirVersion + "/Patient", function (req, res, next)
   process.env.DEBUG && console.log('POST /fhir/Patient/', JSON.stringify(req.body, null, 2));
 
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("content-type", "application/fhir+json");
+  res.setHeader("content-type", "application/fhir+json; charset=utf-8");
 
   var accessTokenStr = (req.params && req.params.access_token) || (req.query && req.query.access_token);
   if(typeof oAuth2Server === 'object'){
@@ -352,7 +352,7 @@ JsonRoutes.add("get", "/" + fhirVersion + "/Patient/:id/_history", function (req
   process.env.DEBUG && console.log('GET /fhir-3.0.0/Patient/', req.query._count);
 
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("content-type", "application/fhir+json");
+  res.setHeader("content-type", "application/fhir+json; charset=utf-8");
 
   var accessTokenStr = (req.params && req.params.access_token) || (req.query && req.query.access_token);
   if(typeof oAuth2Server === 'object'){
@@ -407,7 +407,7 @@ JsonRoutes.add("get", "/" + fhirVersion + "/Patient/:id/_history/:versionId", fu
   //process.env.DEBUG && console.log('GET /fhir-3.0.0/Patient/:id/_history/:versionId', req.query._count);
 
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("content-type", "application/fhir+json");
+  res.setHeader("content-type", "application/fhir+json; charset=utf-8");
 
   var accessTokenStr = (req.params && req.params.access_token) || (req.query && req.query.access_token);
   if(typeof oAuth2Server === 'object'){
@@ -516,7 +516,7 @@ JsonRoutes.add("get", "/" + fhirVersion + "/Patient", function (req, res, next) 
   process.env.DEBUG && console.log('GET /fhir-3.0.0/Patient', req.query);
 
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("content-type", "application/fhir+json");
+  res.setHeader("content-type", "application/fhir+json; charset=utf-8");
 
   var accessTokenStr = (req.params && req.params.access_token) || (req.query && req.query.access_token);
   if(typeof oAuth2Server === 'object'){
@@ -564,7 +564,7 @@ JsonRoutes.add("post", "/" + fhirVersion + "/Patient/:param", function (req, res
   process.env.DEBUG && console.log('POST /fhir-3.0.0/Patient/' + JSON.stringify(req.query));
 
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("content-type", "application/fhir+json");
+  res.setHeader("content-type", "application/fhir+json; charset=utf-8");
 
   var accessTokenStr = (req.params && req.params.access_token) || (req.query && req.query.access_token);
   if(typeof oAuth2Server === 'object'){
