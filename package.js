@@ -31,12 +31,13 @@ Package.onUse(function (api) {
 
   api.addFiles('lib/Patients.js');
   api.addFiles('server/rest.js', 'server');
-  // api.addFiles('server/hooks.patients.js', 'server');
+  api.addFiles('server/hooks.patients.js', 'server');
 
   if(Package['clinical:fhir-vault-server']){
     api.use('clinical:fhir-vault-server@0.0.3', ['client', 'server'], {weak: true});
   }
   
+  // these exports are put into the global context (but only on the server)
   api.export('Patient', 'server');
   api.export('Patients', 'server');
   api.export('PatientSchema', 'server');
@@ -47,10 +48,7 @@ Package.onUse(function (api) {
 
 Npm.depends({
   "material-ui": "0.20.0",
-  "lodash": "4.17.4",
-  "react": "15.6.1",
-  "react-mixin": "4.0.0",
-  "react-bootstrap": "0.31.5"
+  "lodash": "4.17.4"
 });
 
 
