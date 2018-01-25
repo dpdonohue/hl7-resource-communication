@@ -3,22 +3,22 @@ import { Card, CardHeader, CardText, CardTitle } from 'material-ui/Card';
 import AccountCircle from 'material-ui/svg-icons/action/account-circle';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import PatientTable from './PatientTable';
+import CommunicationTable from './CommunicationTable';
 import React from 'react';
 import { ReactMeteorData } from 'meteor/react-meteor-data';
 import ReactMixin from 'react-mixin';
 import TextField from 'material-ui/TextField';
 
-Session.setDefault('patientDialogOpen', false);
-export class PatientPickList extends React.Component {
+Session.setDefault('communicationDialogOpen', false);
+export class CommunicationPickList extends React.Component {
   constructor(props) {
     super(props);
   }
   getMeteorData() {
     return {
-      patientDialog: {
-        open: Session.get('patientDialogOpen'),
-        patient: {
+      communicationDialog: {
+        open: Session.get('communicationDialogOpen'),
+        communication: {
           display: '',
           reference: ''
         }
@@ -28,64 +28,64 @@ export class PatientPickList extends React.Component {
   changeInput(variable, event, value){
     Session.set(variable, value);
   }
-  handleOpenPatients(){
-    Session.set('patientDialogOpen', true);
+  handleOpenCommunications(){
+    Session.set('communicationDialogOpen', true);
   }  
-  handleClosePatients(){
-    Session.set('patientDialogOpen', false);
+  handleCloseCommunications(){
+    Session.set('communicationDialogOpen', false);
   }  
   render() {
-    const patientActions = [
+    const communicationActions = [
       <FlatButton
         label="Clear"
         primary={true}
-        onTouchTap={this.handleClosePatients}
+        onTouchTap={this.handleCloseCommunications}
       />,
       <FlatButton
         label="Select"
         primary={true}
         keyboardFocused={true}
-        onTouchTap={this.handleClosePatients}
+        onTouchTap={this.handleCloseCommunications}
       />
     ];
     return(
       <GlassCard>
         <CardTitle
-          title="Patient Pick List"
+          title="Communication Pick List"
         />
         <CardText>
 
           <TextField
             hintText="Jane Doe"
-            errorText="Patient Search"
+            errorText="Communication Search"
             onChange={this.changeInput.bind(this, 'description')}
-            value={this.data.patientDialog.patient.display}
+            value={this.data.communicationDialog.communication.display}
             fullWidth>
               <FlatButton
-                label="Patients"
-                className="patientsButton"
+                label="Communications"
+                className="communicationsButton"
                 primary={true}
-                onTouchTap={this.handleOpenPatients}
+                onTouchTap={this.handleOpenCommunications}
                 icon={ <AccountCircle /> }
                 style={{textAlign: 'right', cursor: 'pointer'}}
               />
             </TextField>
 
           <Dialog
-            title="Patient Search"
-            actions={patientActions}
+            title="Communication Search"
+            actions={communicationActions}
             modal={false}
-            open={this.data.patientDialog.open}
-            onRequestClose={this.handleClosePatients}
+            open={this.data.communicationDialog.open}
+            onRequestClose={this.handleCloseCommunications}
           >
             <CardText style={{overflowY: "auto"}}>
             <TextField
               hintText="Jane Doe"
-              errorText="Patient Search"
+              errorText="Communication Search"
               onChange={this.changeInput.bind(this, 'description')}
-              value={this.data.patientDialog.patient.display}
+              value={this.data.communicationDialog.communication.display}
               fullWidth />
-              <PatientTable />
+              <CommunicationTable />
             </CardText>
           </Dialog>
         </CardText>
@@ -93,4 +93,4 @@ export class PatientPickList extends React.Component {
     );
   }
 }
-ReactMixin(PatientPickList.prototype, ReactMeteorData);
+ReactMixin(CommunicationPickList.prototype, ReactMeteorData);

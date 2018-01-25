@@ -1,13 +1,13 @@
 
-<template name="patientsTablePage">
-  <article id="patientsTablePage" style="{{getPageHeight}}">
-    {{> recordHeader url="patients" spreadsheet=false  imageGrid=false}}
+<template name="communicationsTablePage">
+  <article id="communicationsTablePage" style="{{getPageHeight}}">
+    {{> recordHeader url="communications" spreadsheet=false  imageGrid=false}}
     <div class="horizontally-padded page" style={{getOpacity}}>
-      <input id="patientSearchInput" type="text" class="glass fullwidth form-control" placeholder="search..." value="{{getRecordSearchFilter}}" />
+      <input id="communicationSearchInput" type="text" class="glass fullwidth form-control" placeholder="search..." value="{{getRecordSearchFilter}}" />
 
-      <table id="patientsTable" class="table table-striped tablesorter">
+      <table id="communicationsTable" class="table table-striped tablesorter">
         <thead>
-          <tr class="patientHeaderRow">
+          <tr class="communicationHeaderRow">
             <th>
               <i class="fa fa-signal"></i>
             </th>
@@ -20,8 +20,8 @@
           </tr>
         </thead>
         <tbody>
-          {{#each patientsList}}
-            <tr class="patientRow {{isGrayedOut}}">
+          {{#each communicationsList}}
+            <tr class="communicationRow {{isGrayedOut}}">
               <td class="checkbox">
                 <i class="fa {{checkedIcon}}"></i>
               </td>

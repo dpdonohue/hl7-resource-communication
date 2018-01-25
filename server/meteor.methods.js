@@ -1,13 +1,13 @@
 
 
 Meteor.methods({
-  createPatient:function(patientObject){
-    check(patientObject, Object);
+  createCommunication:function(communicationObject){
+    check(communicationObject, Object);
 
     if (process.env.NODE_ENV === 'test') {
       console.log('-----------------------------------------');
-      console.log('Creating Patient...');
-      Patients.insert(patientObject, function(error, result){
+      console.log('Creating Communication...');
+      Communications.insert(communicationObject, function(error, result){
         if (error) {
           console.log(error);
           if (typeof HipaaLogger === 'object') {
@@ -15,18 +15,18 @@ Meteor.methods({
               eventType: "error",
               userId: Meteor.userId(),
               userName: Meteor.user().fullName(),
-              collectionName: "Patients"
+              collectionName: "Communications"
             });
           }
         }
         if (result) {
-          console.log('Patient created: ' + result);
+          console.log('Communication created: ' + result);
           if (typeof HipaaLogger === 'object') {
             HipaaLogger.logEvent({
               eventType: "create",
               userId: Meteor.userId(),
               userName: Meteor.user().fullName(),
-              collectionName: "Patients"
+              collectionName: "Communications"
             });
           }
         }
@@ -36,55 +36,103 @@ Meteor.methods({
       console.log('Try setting NODE_ENV=test');
     }
   },
-  initializePatient:function(){
-    if (Patients.find().count() === 0) {
+  initializeCommunication:function(){
+    if (Communications.find().count() === 0) {
       console.log('-----------------------------------------');
-      console.log('No records found in Patients collection.  Lets create some...');
+      console.log('No records found in Communications collection.  Lets create some...');
 
-      var defaultPatient = {
-        'name' : [
+      var defaultCommunication = {
+        "resourceType": "Communication",
+        "id": "example",
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Blank Communication</div>"
+        },
+        "identifier": [
           {
-            'text' : 'Jane Doe',
-            'resourceType' : 'HumanName'
-          }
-        ],
-        'active' : true,
-        'gender' : 'female',
-        'identifier' : [
-          {
-            'use' : 'usual',
-            'type' : {
-              text: 'Medical record number',
-              'coding' : [
-                {
-                  'system' : 'http://hl7.org/fhir/v2/0203',
-                  'code' : 'MR'
-                }
-              ]
+            "type": {
+              "text": "Paging System"
             },
-            'system' : 'urn:oid:1.2.36.146.595.217.0.1',
-            'value' : '123',
-            'period' : {}
+            "system": "urn:oid:1.3.4.5.6.7",
+            "value": "2345678901"
           }
         ],
-        'birthdate' : new Date(1970, 1, 25),
-        'resourceType' : 'Patient'
+        "definition": [
+          {
+            "display": "Hyperkalemia"
+          }
+        ],
+        "partOf": [
+          {
+            "display": "Serum Potassium Observation"
+          }
+        ],
+        "status": "completed",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://acme.org/messagetypes",
+                "code": "Alert"
+              }
+            ],
+            "text": "Alert"
+          }
+        ],
+        "medium": [
+          {
+            "coding": [
+              {
+                "system": "http://hl7.org/fhir/v3/ParticipationMode",
+                "code": "WRITTEN",
+                "display": "written"
+              }
+            ],
+            "text": "written"
+          }
+        ],
+        "subject": {
+          "reference": "Patient/example"
+        },
+        "recipient": [
+          {
+            "reference": "Practitioner/example"
+          }
+        ],
+        "context": {
+          "reference": "Encounter/example"
+        },
+        "sent": "2014-12-12T18:01:10-08:00",
+        "received": "2014-12-12T18:01:11-08:00",
+        "sender": {
+          "reference": "Device/f001"
+        },
+        "payload": [
+          {
+            "contentString": "Patient 1 has a very high serum potassium value (7.2 mmol/L on 2014-Dec-12 at 5:55 pm)"
+          },
+          {
+            "contentReference": {
+              "display": "Serum Potassium Observation"
+            }
+          }
+        ]
       };
 
-      Meteor.call('createPatient', defaultPatient);
+      Meteor.call('createCommunication', defaultCommunication);
     } else {
-      console.log('Patients already exist.  Skipping.');
+      console.log('Communications already exist.  Skipping.');
     }
   },
-  dropPatients: function(){
+  dropCommunications: function(){
     console.log('-----------------------------------------');
-    console.log('Dropping patients... ');
+    console.log('Dropping communications... ');
 
     if (process.env.NODE_ENV === 'test') {
       console.log('-----------------------------------------');
-      console.log('Creating Patient...');
-      Patients.find().forEach(function(patient){
-        Patients.remove({_id: patient._id});
+      console.log('Creating Communication...');
+      Communications.find().forEach(function(communication){
+        Communications.remove({_id: communication._id});
       });
     } else {
       console.log('This command can only be run in a test environment.');

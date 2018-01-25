@@ -6,7 +6,7 @@ import { ReactMeteorData } from 'meteor/react-meteor-data';
 import ReactMixin from 'react-mixin';
 import { Table } from 'react-bootstrap';
 
-export default class PatientTable extends React.Component {
+export default class CommunicationTable extends React.Component {
   getMeteorData() {
     let data = {
       style: {
@@ -32,7 +32,7 @@ export default class PatientTable extends React.Component {
         }
       },
       selected: [],
-      patients: []
+      communications: []
     };
 
     let query = {};
@@ -46,7 +46,7 @@ export default class PatientTable extends React.Component {
       options.limit = this.props.limit;      
     }
 
-    data.patients = Patients.find(query, options).map(function(person){
+    data.communications = Communications.find(query, options).map(function(person){
       let result = {
         _id: person._id,
         active: person.active.toString(),
@@ -86,13 +86,13 @@ export default class PatientTable extends React.Component {
       data.style.cellHideOnPhone.display = 'table-cell';
     }
 
-    // console.log("PatientTable[data]", data);
+    // console.log("CommunicationTable[data]", data);
     return data;
   }
   rowClick(id){
-    Session.set('patientsUpsert', false);
-    Session.set('selectedPatient', id);
-    Session.set('patientPageTabIndex', 2);
+    Session.set('communicationsUpsert', false);
+    Session.set('selectedCommunication', id);
+    Session.set('communicationPageTabIndex', 2);
   }
   renderRowAvatarHeader(){
     if (Meteor.settings.public.defaults.avatars) {
@@ -101,26 +101,26 @@ export default class PatientTable extends React.Component {
       );
     }
   }
-  renderRowAvatar(patient, avatarStyle){
+  renderRowAvatar(communication, avatarStyle){
     if (Meteor.settings.public.defaults.avatars) {
       return (
         <td className='avatar'>
-          <img src={patient.photo} style={avatarStyle}/>
+          <img src={communication.photo} style={avatarStyle}/>
         </td>
       );
     }
   }
    onSend(id){
-      let patient = Patients.findOne({_id: id});
+      let communication = Communications.findOne({_id: id});
 
-      console.log("PatientTable.onSend()", patient);
+      console.log("CommunicationTable.onSend()", communication);
 
       var httpEndpoint = "http://localhost:8080";
       if (Meteor.settings && Meteor.settings.public && Meteor.settings.public.interfaces && Meteor.settings.public.interfaces.default && Meteor.settings.public.interfaces.default.channel && Meteor.settings.public.interfaces.default.channel.endpoint) {
         httpEndpoint = Meteor.settings.public.interfaces.default.channel.endpoint;
       }
-      HTTP.post(httpEndpoint + '/Patient', {
-        data: patient
+      HTTP.post(httpEndpoint + '/Communication', {
+        data: communication
       }, function(error, result){
         if (error) {
           console.log("error", error);
@@ -132,26 +132,26 @@ export default class PatientTable extends React.Component {
     }
   render () {
     let tableRows = [];
-    for (var i = 0; i < this.data.patients.length; i++) {
+    for (var i = 0; i < this.data.communications.length; i++) {
       tableRows.push(
-        <tr key={i} className="patientRow" style={{cursor: "pointer"}}>
+        <tr key={i} className="communicationRow" style={{cursor: "pointer"}}>
 
-          { this.renderRowAvatar(this.data.patients[i], this.data.style.avatar) }
+          { this.renderRowAvatar(this.data.communications[i], this.data.style.avatar) }
 
-          <td className='name' onClick={ this.rowClick.bind('this', this.data.patients[i]._id)} style={this.data.style.cell}>{this.data.patients[i].name }</td>
-          <td className='gender' onClick={ this.rowClick.bind('this', this.data.patients[i]._id)} style={this.data.style.cell}>{this.data.patients[i].gender}</td>
-          <td className='birthDate' onClick={ this.rowClick.bind('this', this.data.patients[i]._id)} style={{minWidth: '100px', paddingTop: '16px'}}>{this.data.patients[i].birthDate }</td>
-          <td className='isActive' onClick={ this.rowClick.bind('this', this.data.patients[i]._id)} style={this.data.style.cellHideOnPhone}>{this.data.patients[i].active}</td>
-          <td className='id' onClick={ this.rowClick.bind('this', this.data.patients[i]._id)} style={this.data.style.cellHideOnPhone}><span className="barcode">{this.data.patients[i]._id}</span></td>
-          <td className='mrn' style={this.data.style.cellHideOnPhone}>{this.data.patients[i].mrn}</td>
-          <td className='sendButton' style={this.data.style.hideOnPhone}><FlatButton label="send" onClick={this.onSend.bind('this', this.data.patients[i]._id)}/></td>
+          <td className='name' onClick={ this.rowClick.bind('this', this.data.communications[i]._id)} style={this.data.style.cell}>{this.data.communications[i].name }</td>
+          <td className='gender' onClick={ this.rowClick.bind('this', this.data.communications[i]._id)} style={this.data.style.cell}>{this.data.communications[i].gender}</td>
+          <td className='birthDate' onClick={ this.rowClick.bind('this', this.data.communications[i]._id)} style={{minWidth: '100px', paddingTop: '16px'}}>{this.data.communications[i].birthDate }</td>
+          <td className='isActive' onClick={ this.rowClick.bind('this', this.data.communications[i]._id)} style={this.data.style.cellHideOnPhone}>{this.data.communications[i].active}</td>
+          <td className='id' onClick={ this.rowClick.bind('this', this.data.communications[i]._id)} style={this.data.style.cellHideOnPhone}><span className="barcode">{this.data.communications[i]._id}</span></td>
+          <td className='mrn' style={this.data.style.cellHideOnPhone}>{this.data.communications[i].mrn}</td>
+          <td className='sendButton' style={this.data.style.hideOnPhone}><FlatButton label="send" onClick={this.onSend.bind('this', this.data.communications[i]._id)}/></td>
         </tr>
       );
     }
 
 
     return(
-      <Table id='patientsTable' responses hover >
+      <Table id='communicationsTable' responses hover >
         <thead>
           <tr>
 
@@ -176,4 +176,4 @@ export default class PatientTable extends React.Component {
 }
 
 
-ReactMixin(PatientTable.prototype, ReactMeteorData);
+ReactMixin(CommunicationTable.prototype, ReactMeteorData);

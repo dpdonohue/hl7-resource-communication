@@ -1,8 +1,8 @@
 Package.describe({
-  name: 'clinical:hl7-resource-patient',
-  version: '3.2.0',
-  summary: 'HL7 FHIR Resource - Patient',
-  git: 'https://github.com/clinical-meteor/hl7-resource-patient',
+  name: 'dpdonohue:hl7-resource-communication',
+  version: '0.0.1',
+  summary: 'HL7 FHIR Resource - Communication',
+  git: 'https://github.com/dpdonohue/hl7-resource-communication',
   documentation: 'README.md'
 });
 
@@ -29,18 +29,18 @@ Package.onUse(function (api) {
 
   api.imply('clinical:user-model');
 
-  api.addFiles('lib/Patients.js');
+  api.addFiles('lib/Communications.js');
   api.addFiles('server/rest.js', 'server');
-  api.addFiles('server/hooks.patients.js', 'server');
+  api.addFiles('server/hooks.communications.js', 'server');
 
   if(Package['clinical:fhir-vault-server']){
     api.use('clinical:fhir-vault-server@0.0.3', ['client', 'server'], {weak: true});
   }
   
   // these exports are put into the global context (but only on the server)
-  api.export('Patient', 'server');
-  api.export('Patients', 'server');
-  api.export('PatientSchema', 'server');
+  api.export('Communication', 'server');
+  api.export('Communications', 'server');
+  api.export('CommunicationSchema', 'server');
 
   api.mainModule('index.jsx', 'client');
 });

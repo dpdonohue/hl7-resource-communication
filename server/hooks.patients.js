@@ -1,47 +1,47 @@
 import { HTTP } from 'meteor/http';
 import { Meteor } from 'meteor/meteor';
 
-import { Patients } from '../lib/Patients';
+import { Communications } from '../lib/Communications';
 
-Patients.after.insert(function (userId, doc) {
+Communications.after.insert(function (userId, doc) {
 
   // HIPAA Audit Log
-  HipaaLogger.logEvent({eventType: "create", userId: userId, userName: '', collectionName: "Patients"});
+  HipaaLogger.logEvent({eventType: "create", userId: userId, userName: '', collectionName: "Communications"});
 
   // RELAY/SEND FUNCTIONALITY
   // interface needs to be active in order to send the messages
   if (Meteor.settings && Meteor.settings.public && Meteor.settings.public.interfaces && Meteor.settings.public.interfaces.default && Meteor.settings.public.interfaces.default.status && (Meteor.settings.public.interfaces.default.status === "active")) {
-    HTTP.put(Meteor.settings.public.interfaces.default.channel.endpoint + '/Patient', {
+    HTTP.put(Meteor.settings.public.interfaces.default.channel.endpoint + '/Communication', {
       data: doc
     }, function(error, result){
       if (error) {
-        console.log("POST /Patient", error);
+        console.log("POST /Communication", error);
       }
       if (result) {
-        console.log("POST /Patient", result);
+        console.log("POST /Communication", result);
       }
     });
   }
 });
-Patients.after.update(function (userId, doc) {
+Communications.after.update(function (userId, doc) {
 
   // HIPAA Audit Log
-  HipaaLogger.logEvent({eventType: "update", userId: userId, userName: '', collectionName: "Patients"});
+  HipaaLogger.logEvent({eventType: "update", userId: userId, userName: '', collectionName: "Communications"});
 
   // interface needs to be active in order to send the messages
   if (Meteor.settings && Meteor.settings.public && Meteor.settings.public.interfaces && Meteor.settings.public.interfaces.default && Meteor.settings.public.interfaces.default.status && (Meteor.settings.public.interfaces.default.status === "active")) {
-    HTTP.post(Meteor.settings.public.interfaces.default.channel.endpoint + '/Patient', {
+    HTTP.post(Meteor.settings.public.interfaces.default.channel.endpoint + '/Communication', {
       data: doc
     }, function(error, result){
       if (error) {
-        console.log("POST /Patient", error);
+        console.log("POST /Communication", error);
       }
       if (result) {
-        console.log("POST /Patient", result);
+        console.log("POST /Communication", result);
       }
     });
   }
 });
-Patients.after.remove(function (userId, doc) {
+Communications.after.remove(function (userId, doc) {
   // ...
 });

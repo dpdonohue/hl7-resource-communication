@@ -1,4 +1,4 @@
-Session.setDefault( 'patientSearchFilter', '' );
+Session.setDefault( 'communicationSearchFilter', '' );
 Session.setDefault( 'tableLimit', 20 );
 Session.setDefault( 'paginationCount', 1 );
 Session.setDefault( 'selectedPagination', 0 );
@@ -9,28 +9,28 @@ Session.setDefault( 'skipCount', 0 );
 //------------------------------------------------------------------------------
 // ROUTING
 
-Router.route( '/list/patients/', {
-  name: 'patientsListPage',
-  template: 'patientsListPage',
+Router.route( '/list/communications/', {
+  name: 'communicationsListPage',
+  template: 'communicationsListPage',
   data: function () {
-    return Patients.find();
+    return Communications.find();
   }
 });
 
 //------------------------------------------------------------------------------
 // TEMPLATE INPUTS
 
-Template.patientsListPage.events( {
+Template.communicationsListPage.events( {
   'click .addRecordIcon': function () {
-    Router.go( '/insert/patient' );
+    Router.go( '/insert/communication' );
   },
-  'click .patientItem': function () {
-    Router.go( '/view/patient/' + this._id );
+  'click .communicationItem': function () {
+    Router.go( '/view/communication/' + this._id );
   },
   // use keyup to implement dynamic filtering
   // keyup is preferred to keypress because of end-of-line issues
-  'keyup #patientSearchInput': function () {
-    Session.set( 'patientSearchFilter', $( '#patientSearchInput' ).val() );
+  'keyup #communicationSearchInput': function () {
+    Session.set( 'communicationSearchFilter', $( '#communicationSearchInput' ).val() );
   }
 } );
 
@@ -42,14 +42,14 @@ Template.patientsListPage.events( {
 var OFFSCREEN_CLASS = 'off-screen';
 var EVENTS = 'webkitTransitionEnd oTransitionEnd transitionEnd msTransitionEnd transitionend';
 
-// Template.patientsListPage.rendered = function () {
+// Template.communicationsListPage.rendered = function () {
 //   console.log( 'trying to update layout...' );
 //
 //   Template.appLayout.delayedLayout( 20 );
 // };
 
 
-Template.patientsListPage.helpers( {
+Template.communicationsListPage.helpers( {
   dateOfBirth: function(){
     return moment(this.birthDate).format("MMM DD, YYYY");
   },
@@ -57,21 +57,21 @@ Template.patientsListPage.helpers( {
     return this.name[0].text;
   },
   hasNoContent: function () {
-    if ( Patients.find().count() === 0 ) {
+    if ( Communications.find().count() === 0 ) {
       return true;
     } else {
       return false;
     }
   },
-  patientsList: function () {
+  communicationsList: function () {
     Session.set( 'receivedData', new Date() );
 
     Template.appLayout.delayedLayout( 20 );
 
-    return Patients.find();
-    // return Patients.find( {
+    return Communications.find();
+    // return Communications.find( {
     //   'name.$.text': {
-    //     $regex: Session.get( 'patientSearchFilter' ),
+    //     $regex: Session.get( 'communicationSearchFilter' ),
     //     $options: 'i'
     //   }
     // } );

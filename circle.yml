@@ -42,9 +42,9 @@ dependencies:
     - cd helloworld && meteor npm install
     - cd helloworld && npm i --save-dev selenium-webdriver@3.0.0-beta-2 chromedriver
     - cd helloworld && meteor add dispatch:mocha practicalmeteor:chai
-    - cd helloworld && meteor add clinical:hl7-resource-patient 
+    - cd helloworld && meteor add dpdonohue:hl7-resource-communication 
     - cd helloworld && mkdir imports 
-    - cd helloworld && cp ../tests/Patients.tests.js imports/
+    - cd helloworld && cp ../tests/Communications.tests.js imports/
     
 ## Customize test commands
 test:

@@ -1,10 +1,10 @@
 
-<template name="patientsListPage">
-  <div id="patientsListPage" class="page" style="{{getPageHeight}}">
-    {{> recordHeader url="patients" spreadsheet=false  imageGrid=false}}
+<template name="communicationsListPage">
+  <div id="communicationsListPage" class="page" style="{{getPageHeight}}">
+    {{> recordHeader url="communications" spreadsheet=false  imageGrid=false}}
     <div class="horizontally-padded page" style="{{getOpacityWithCorner}}">
-      <input id="patientSearchInput" type="text" class="glass fullwidth form-control" placeholder="search..." value="{{getRecordSearchFilter}}" />
-      <ul id="patientsUnorderedList">
+      <input id="communicationSearchInput" type="text" class="glass fullwidth form-control" placeholder="search..." value="{{getRecordSearchFilter}}" />
+      <ul id="communicationsUnorderedList">
         {{#if hasNoContent}}
           <li id="noResultsMessage" class="addRecordIcon">
             <article class="noResultsMessage">
@@ -14,10 +14,10 @@
           </li>
 
         {{else}}
-          {{#each patientsList}}
-            <li class="patientItem">
+          {{#each communicationsList}}
+            <li class="communicationItem">
               <img class="avatar" src="{{getAvatar}}" alt="" />
-              <article class="patientMetadata">
+              <article class="communicationMetadata">
                 <h2 class="fullNameText">{{ getName }}</h2>
                 <span class="pull-right barcode gray idText">{{_id}}</span>
                 <h6 class="descriptionText">{{dateOfBirth}}</h6>

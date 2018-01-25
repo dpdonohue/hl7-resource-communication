@@ -1,4 +1,4 @@
-Session.setDefault('patientSearchFilter', '');
+Session.setDefault('communicationSearchFilter', '');
 Session.setDefault('tableLimit', 20);
 Session.setDefault('paginationCount', 1);
 Session.setDefault('selectedPagination', 0);
@@ -10,9 +10,9 @@ Session.setDefault('skipCount', 0);
 // ROUTING
 
 Router.map(function(){
-  this.route('patientsTablePage', {
-    path: '/table/patients',
-    template: 'patientsTablePage'
+  this.route('communicationsTablePage', {
+    path: '/table/communications',
+    template: 'communicationsTablePage'
   });
 });
 
@@ -20,36 +20,36 @@ Router.map(function(){
 //------------------------------------------------------------------------------
 // TEMPLATE INPUTS
 
-Template.patientsTablePage.events({
+Template.communicationsTablePage.events({
   'click .checkbox': function(event, template){
     event.stopPropagation();
     if(this.checked){
-      Patients.update({_id: this._id}, {$set: {checked: false}});
+      Communications.update({_id: this._id}, {$set: {checked: false}});
     }else{
-      Patients.update({_id: this._id}, {$set: {checked: true}});
+      Communications.update({_id: this._id}, {$set: {checked: true}});
     }
   },
   'click .flag': function(event, template){
     event.stopPropagation();
     if(this.flagged){
-      Patients.update({_id: this._id}, {$set: {flagged: false}});
+      Communications.update({_id: this._id}, {$set: {flagged: false}});
     }else{
-      Patients.update({_id: this._id}, {$set: {flagged: true}});
+      Communications.update({_id: this._id}, {$set: {flagged: true}});
     }
   },
   'click .addRecordIcon': function(){
-    Router.go('/insert/patient');
+    Router.go('/insert/communication');
   },
   'click .delete': function(){
-    Patients.remove(this._id);
+    Communications.remove(this._id);
   },
   'click tr': function(){
-    Router.go('/view/patient/' + this._id);
+    Router.go('/view/communication/' + this._id);
   },
   // use keyup to implement dynamic filtering
   // keyup is preferred to keypress because of end-of-line issues
-  'keyup #patientSearchInput': function() {
-    Session.set('patientSearchFilter', $('#patientSearchInput').val());
+  'keyup #communicationSearchInput': function() {
+    Session.set('communicationSearchFilter', $('#communicationSearchInput').val());
   }
 });
 
@@ -57,7 +57,7 @@ Template.patientsTablePage.events({
 //------------------------------------------------------------------------------
 // TEMPLATE OUTPUTS
 
-Template.patientsTablePage.helpers({
+Template.communicationsTablePage.helpers({
   getName: function(){
     return this.name[0].text;
   },
@@ -85,7 +85,7 @@ Template.patientsTablePage.helpers({
       return "fa-flag-o";
     }
   },
-  patientsList: function() {
+  communicationsList: function() {
     // this triggers a refresh of data elsewhere in the table
     // step C:  receive some data and set our reactive data variable with a new value
     Session.set('receivedData', new Date());
@@ -95,19 +95,19 @@ Template.patientsTablePage.helpers({
     // this is a performant local (client-side) search on the data
     // current in our CustomerAccounts cursor, and will reactively
     // update the table
-    return Patients.find({
+    return Communications.find({
       'name.text': {
-        $regex: Session.get('patientSearchFilter'),
+        $regex: Session.get('communicationSearchFilter'),
         $options: 'i'
     }});
   }
 });
 
 
-Template.patientsTablePage.rendered = function(){
+Template.communicationsTablePage.rendered = function(){
 
   // step A:  initialize the table sorting functionality
-  $(this.find('#patientsTable')).tablesorter();
+  $(this.find('#communicationsTable')).tablesorter();
 
   // the Tracker API watches Collection and Session objects
   // so what we're doing here is registering a Tracker to watch the
@@ -125,7 +125,7 @@ Template.patientsTablePage.rendered = function(){
     setTimeout(function() {
       // step F:  update the tablesorting library 200ms after receiving data
       // and Blaze has had a change to rerender the table
-      $("#patientsTable").trigger("update");
+      $("#communicationsTable").trigger("update");
     }, 200);
   });
 

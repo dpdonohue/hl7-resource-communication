@@ -1,0 +1,33 @@
+<template name="communicationUpsertPage">
+  <div id="communicationUpsertPage" style="{{getPageHeight}}">
+    {{> recordHeader type="record" url="communications" spreadsheet=false  imageGrid=false}}
+
+    <div id="communicationUpsertCard" class="padded card-contents page" style="{{getOpacity}}">
+
+      <div id="communicationMetaData">
+        <div id="communicationMetaInputs">
+          <input id="communicationNameInput" class="glass form-control" type="text" placeholder="communicationname" value="{{ getName }}" {{isReadOnly}}><br>
+          <input id="communicationEmailInput"  class="glass form-control" type="text" placeholder="communicationname@somewhere.com" value="{{getEmailAddress}}" {{isReadOnly}}>
+          <!-- <input id="communicationAvatarInput"  class="glass form-control" type="text" placeholder="http://www.widget.com/cog.jpg" value="{{profile.avatar}}" {{isReadOnly}}> -->
+        </div>
+        <img id="communicationImage" src="{{ getAvatar }}" />
+      </div>
+      <textarea id="communicationDescriptionInput"  class="glass form-control" rows="10" placeholder="Lorem ipsum dolar set et..." {{isReadOnly}}>{{profile.description}}</textarea><br>
+    </div>
+
+    <footer class="pageFooter">
+      <button id="saveUserButton">
+        <i class="fa fa-dot-circle-o"></i>
+        <i class="fa fa-dot-circle-o"></i>
+        <i class="fa fa-dot-circle-o"></i>
+      </button>
+      {{#if _id}}
+        <button id="removeUserButton">
+          <i class="fa fa-times"></i>
+          <i class="fa fa-times"></i>
+          <i class="fa fa-times"></i>
+        </button>
+      {{/if}}
+    </footer>
+  </div>
+</template>

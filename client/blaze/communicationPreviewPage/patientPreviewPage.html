@@ -1,0 +1,11 @@
+<template name="communicationPreviewPage">
+  <div id="communicationPreviewPage" class="fullheight padded page">
+    {{> recordHeader type="record" url="communications" spreadsheet=false  imageGrid=false}}
+      <div id="communicationPreviewCard" class="card-contents" style="{{getOpacity}}">
+        <h2 id="communicationfullNameText">{{profile.name}}</h2>
+        <p id="notesText">
+          {{description}}
+        </p>
+      </div>
+  </div>
+</template>

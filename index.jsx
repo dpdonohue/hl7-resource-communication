@@ -1,46 +1,46 @@
 
 
-// import PatientDetail from './client/react/PatientDetail.js';
-// import PatientPickList from './client/react/PatientPickList.js';
-// import PatientsPage from './client/react/PatientsPage.js';
-// import PatientTable from './client/react/PatientTable.js';
-// import { insertPatient, removePatientById, updatePatient } from './lib/methods.js';
+// import CommunicationDetail from './client/react/CommunicationDetail.js';
+// import CommunicationPickList from './client/react/CommunicationPickList.js';
+// import CommunicationsPage from './client/react/CommunicationsPage.js';
+// import CommunicationTable from './client/react/CommunicationTable.js';
+// import { insertCommunication, removeCommunicationById, updateCommunication } from './lib/methods.js';
 
-import PatientsPage from './client/react/PatientsPage';
+import CommunicationsPage from './client/react/CommunicationsPage';
 //import LandingPage from './client/react/LandingPage';
 
 var DynamicRoutes = [{
-  'name': 'PatientPage',
-  'path': '/patients',
-  'component': PatientsPage,
+  'name': 'CommunicationPage',
+  'path': '/communications',
+  'component': CommunicationsPage,
   'requireAuth': true
 }];
 
 // var DynamicRoutes = [];
 
 var SidebarElements = [{
-  'primaryText': 'Patients',
-  'to': '/patients',
-  'href': '/patients'
+  'primaryText': 'Communications',
+  'to': '/communications',
+  'href': '/communications'
 }];
 
 export { 
   SidebarElements, 
   DynamicRoutes, 
 
-  PatientsPage,
-  // PatientDetail,
-  // PatientPickList,
-  // PatientTable,
+  CommunicationsPage,
+  // CommunicationDetail,
+  // CommunicationPickList,
+  // CommunicationTable,
 
-  // attach these to the Patient object, plz
-  // insertPatient, 
-  // removePatientById, 
+  // attach these to the Communication object, plz
+  // insertCommunication, 
+  // removeCommunicationById, 
   // updatePatien
 
-  Patient,
-  Patients,
-  PatientSchema
+  Communication,
+  Communications,
+  CommunicationSchema
 };
 
 
